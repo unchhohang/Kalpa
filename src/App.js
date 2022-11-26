@@ -1,12 +1,11 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
 import "./css/NavSideBar.css";
-import AppLayout from "./component/AppLayout";
-import Billing from "./component/Billing";
-import NavSideBar from "./component/NavSideBar";
-import Products from "./component/Products";
-import Report from "./component/Report";
-import Stock from "./component/Stock";
+import Billing from "./components/Billing";
+import NavSideBar from "./components/NavSideBar";
+import Products from "./components/Products";
+import Report from "./components/Report";
+import Stock from "./components/Stock";
 
 function App() {
   function Layout() {

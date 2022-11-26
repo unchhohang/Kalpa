@@ -10,7 +10,6 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import { makeStyles } from "@material-ui/styles";
 
 
 function createData(id, name, price) {
@@ -32,32 +31,33 @@ const rows = [
 ];
 
 const tableStyling = {
-  padding: "15px 40px"
+  padding: "20px 40px"
 };
 
-// const useStyles = makeStyles({
-//   table: {
-//     minWidth: 650
-//   }
-// });
 
 function Products() {
-  // const classes = useStyles();
-
   return (
-    <div>
+    <div className='Background'>
       <div>
         <h1>Manage</h1>
         <h5>Products</h5>
       </div>
     <form>
-    <TextField id="outlined-basic" label="Product Name" variant="outlined"/>
-    <TextField id="outlined-basic" label="Price" variant="outlined"/>
+    <TextField style={{
+    marginRight: "30px",
+    backgroundColor: "#FFFEFE"
+    }}
+     id="outlined-basic" label="Product Name" variant="outlined"/>
+    <TextField style={{
+      backgroundColor: "#FFFEFE"
+    }}
+    id="outlined-basic" label="Price" variant="outlined"/>
     <Button  style={{
       borderRadius: 35,
       backgroundColor: "#1E853C",
+      marginLeft:"30px",
       padding: "10px 30px",
-      fontSize: "16px"
+      fontSize: "16px",
     }}
      variant='contained'>ADD</Button>
     </form>

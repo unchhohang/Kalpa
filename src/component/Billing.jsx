@@ -4,7 +4,7 @@
 
 export default function Billing(){
     return(
-        <div>
+        <div className='Background'>
             <h1>Billing</h1>
         </div>
     )

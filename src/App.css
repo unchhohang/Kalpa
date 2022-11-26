@@ -4,6 +4,16 @@
   flex-direction: row;
 }
 
+.Background{
+  margin: 0;
+  background-color: #E3E4C4;
+}
+
+.div{
+  display: flex;
+  align-items: center;
+}
+
 /* .App-logo {
   height: 40vmin;
   pointer-events: none;
