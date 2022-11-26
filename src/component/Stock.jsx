@@ -3,5 +3,7 @@
  */
 
 export default function Stock() {
-  return <div>Stock</div>;
+  return  <div className='Background'>
+  <div><h1>Stock</h1></div>
+  </div>;
 }
