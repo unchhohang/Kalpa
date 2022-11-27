@@ -1,5 +1,14 @@
 .navBar-container {
-  margin: 50px;
+  min-height: 100vh;
+  background-color: #d9d9d9;
+}
+
+.navBar-links{
+  min-height: 100vh;
+}
+
+.image-container{
+  background-color: white;
 }
 
 ul {
