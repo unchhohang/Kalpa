@@ -1,12 +1,13 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
 import "./css/NavSideBar.css";
-import AppLayout from "./component/AppLayout";
 import Billing from "./component/Billing";
-import NavSideBar from "./component/NavSideBar";
 import Products from "./component/Products";
-import Report from "./component/Report";
 import Stock from "./component/Stock";
+import Report from "./component/Report";
+import NavSideBar from "./component/NavSideBar";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"; // Imported for date picker accord to docs
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 function App() {
   function Layout() {
@@ -42,9 +43,11 @@ function App() {
     },
   ]);
   return (
-    <div className="App">
-      <RouterProvider router={router} />
-    </div>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <div className="App">
+        <RouterProvider router={router} />
+      </div>
+    </LocalizationProvider>
   );
 }
 
