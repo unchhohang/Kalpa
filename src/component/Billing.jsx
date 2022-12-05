@@ -2,6 +2,7 @@
  * Screen for billing
  */
 
+import { Edit } from "@mui/icons-material";
 import {
   Table,
   TableBody,
@@ -12,10 +13,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import Delete from "@mui/icons-material/Delete";
+
 
 export default function Billing() {
   return (
     <div className="container">
+      <h1>Electronic Billing System</h1>
 
     
 
@@ -88,8 +93,8 @@ export default function Billing() {
                 <TableCell>
                   <Typography>400</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography></Typography>
+                <TableCell align="left">
+                  <EditIcon/><Delete/>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -108,9 +113,7 @@ export default function Billing() {
                 <TableCell>
                   <Typography>400</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography></Typography>
-                </TableCell>
+                <TableCell align="left"><EditIcon/><Delete/></TableCell>
               </TableRow>
               <TableRow
                 // key={}
@@ -128,9 +131,7 @@ export default function Billing() {
                 <TableCell>
                   <Typography>400</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography></Typography>
-                </TableCell>
+                <TableCell align="left"><EditIcon/><Delete/></TableCell>
               </TableRow>
               <TableRow
                 // key={}
@@ -148,9 +149,7 @@ export default function Billing() {
                 <TableCell>
                   <Typography>400</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography></Typography>
-                </TableCell>
+                <TableCell align="left"><EditIcon/><Delete/></TableCell>
               </TableRow>
               <TableRow
                 // key={}
@@ -168,9 +167,7 @@ export default function Billing() {
                 <TableCell>
                   <Typography>400</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography></Typography>
-                </TableCell>
+                <TableCell align="left"><EditIcon/><Delete/></TableCell>
               </TableRow>
               <TableRow
                 // key={}
@@ -188,9 +185,7 @@ export default function Billing() {
                 <TableCell>
                   <Typography>400</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography></Typography>
-                </TableCell>
+                <TableCell align="left"><EditIcon/><Delete/></TableCell>
               </TableRow>
               <TableRow
                 // key={}
@@ -208,9 +203,7 @@ export default function Billing() {
                 <TableCell>
                   <Typography>400</Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography></Typography>
-                </TableCell>
+                <TableCell align="left"><EditIcon/><Delete/></TableCell>
               </TableRow>
             </TableBody>
           </Table>

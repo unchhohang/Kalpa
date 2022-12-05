@@ -1,140 +1,245 @@
+/**
+ * Screen for billing
+ */
 
-import billingCss from '../css/products.module.css'
-import React from 'react';
-import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Stack } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+import Delete from "@mui/icons-material/Delete";
+import { Fab } from "@mui/material";
+import ProductCss from "../css/products.module.css"
 
-function createData(id, name, price) {
-  return { id, name, price};
-}
-
-const rows = [ 
-  createData(1, "Satu", "Rs 150"),
-  createData(2, "Mango Pickle", "Rs 250"),
-  createData(3, "Lemon Pickle", "Rs 350"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(1, "Satu", "Rs 150"),
-  createData(2, "Mango Pickle", "Rs 250"),
-  createData(3, "Lemon Pickle", "Rs 350"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500"),
-  createData(4, "Sel Roti", "Rs 500")
-];
-
-const tableStyling = {
-  padding: "20px 40px"
-};
-
-function Products() {
+export default function Billing() {
   return (
-    <div className="container" style={{'min-width': "80vw"}}>
-    <div>
+    <div className="container">
+      <h1>Manage</h1>
+      <h2>Products</h2>
+
+      <div className="customer-inputs">
+        <div className="billing-customer-input">
+          <TextField
+            sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
+            label="Product Name"
+            variant="outlined"
+          />
+        </div>
+        <div className="billing-customer-input">
+          <TextField
+            sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
+            label="Price"
+            variant="outlined"
+          />
+        </div>
+
+        <Fab className="add-btn" size="large" color="success" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </div>
       <div>
-        <h1>Manage</h1>
-        <h2>Products</h2>
+        <TableContainer className={ProductCss.producttable}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead sx={{ backgroundColor: "#D9D9D9" }}>
+              <TableRow>
+                <TableCell>
+                  <h3>Product Id</h3>
+                </TableCell>
+                <TableCell>
+                  <h3>Product Name</h3>
+                </TableCell>
+                <TableCell>
+                  <h3>Price</h3>
+                </TableCell>
+                <TableCell>
+                  <h3>Action</h3>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow
+                // key={}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+              </TableRow>
+              <TableRow
+                // key={}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+              </TableRow>
+              <TableRow
+                // key={}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+              </TableRow>
+              <TableRow
+                // key={}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+              </TableRow>
+              <TableRow
+                // key={}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+              </TableRow>
+              <TableRow
+                // key={}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+              </TableRow>
+              <TableRow
+                // key={}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+                </TableRow>
+                <TableRow>
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+                </TableRow>
+                <TableRow>
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+                </TableRow>
+                <TableRow>
+                <TableCell>
+                  <Typography>Sathu</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>200</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography>400</Typography>
+                </TableCell>
+                <TableCell align="left">
+                  <EditIcon />
+                  <Delete />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
-      </div>
-    <form>
-    <TextField style={{
-    marginRight: "30px",
-    backgroundColor: "#FFFEFE"
-    }}
-     id="outlined-basic" label="Product Name" variant="outlined"/>
-    <TextField style={{
-      backgroundColor: "#FFFEFE"
-    }}
-    id="outlined-basic" label="Price" variant="outlined"/>
-      
-    <Button
-    className="button"
-    variant="contained"
-    color="success"
-    size="large">
-    ADD
-    </Button>
-    </form>
-    
-    <div className="table-container" style = {{'align-self':'center'}}   >
-      <TableContainer component={Paper}
-      sx={{
-        border: "4px solid rgba(0,0,0,0.2)",
-        backgroundColor: '#D9D9D9', 
-        padding: 0,
-        width: 1250,
-        height: 750,
-        // margin: 10,
-        "&::-webkit-scrollbar": {
-          width: 10
-        },
-        "&::-webkit-scrollbar-track": {
-          backgroundColor: "#D9D9D9"
-        },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: "#9D9898",
-          borderRadius: 10
-        },
-        overflowX: "hidden"
-      }}>
-    <Table  sx={{
-          tableLayout: "auto",
-          width: "max-content"
-        }}/>
-      <Table aria-label="simple table">
-       <TableHead>
-       
-         <TableRow>
-         
-           <TableCell align="left">Id</TableCell>
-           <TableCell align="left">Product Name</TableCell>
-           <TableCell align="left">Price</TableCell>
-           <TableCell align="left">Action</TableCell>
-           
-         </TableRow>
-       </TableHead>
-       <TableBody>
-         {rows.map((row) => (
-            <TableRow key={row.right}>
-             <TableCell align="left">{row.id}</TableCell>
-             <TableCell align="left">{row.name}</TableCell>
-             <TableCell align="left">{row.price}</TableCell>
-             <TableCell align="left"><EditIcon/> <DeleteIcon/></TableCell>
-             
-           </TableRow>
-         ))}
-       </TableBody>
-       
-      
-     </Table>
-     
-
-      </TableContainer>
+      <div></div>
     </div>
-      </div>
-    
-
-  )
+  );
 }
-
-export default Products
