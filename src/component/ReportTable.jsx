@@ -19,7 +19,7 @@ export default function ReportTable(props) {
   console.log(props.data);
   let data = props.data;
 
-  const [bill, setBill] = useState(data[0]);
+  const [bill, setBill] = useState(data[1]);
 
   let billLength = data.length;
 
