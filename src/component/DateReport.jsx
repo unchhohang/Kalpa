@@ -20,6 +20,7 @@ export default function DateReport(props) {
 
   return (
     <div>
+      <h1>Bill Section</h1>
       <div>
         <span>
           <DesktopDatePicker

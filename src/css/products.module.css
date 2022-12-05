@@ -2,4 +2,14 @@
 .products-bg{
     background-color: #E3E4C4;
     margin: 10px;
-}
+  }
+  .producttable{
+    overflow: auto;
+    height: 50vh;
+  }
+  
+  .add-btn{
+    position: relative;
+  left: 23vw;
+  top: 22px;
+  }
