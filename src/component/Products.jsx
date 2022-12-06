@@ -27,7 +27,7 @@ export default function Product() {
   const [productStock, setProductStock] = useState([]);
   const [inputName, setInputName] = useState();
   const [inputPrice, setInputPrice] = useState();
-  const [editableRow, setEditableRow] = useState(null);
+  const [editableRowId, setEditableRowId] = useState(null);
   const [updatedPrice, setUpdatedPrice] = useState(0);
   const [updatedName, setUpdatedName] = useState();
 
@@ -170,7 +170,7 @@ export default function Product() {
                       <Typography>{index + 1}</Typography>
                     </TableCell>
                     <TableCell>
-                      {x.productStockId === editableRow ? (
+                      {x.productStockId === editableRowId ? (
                         <TextField
                           value={updatedName}
                           onChange={(e) => {
@@ -182,7 +182,7 @@ export default function Product() {
                       )}
                     </TableCell>
                     <TableCell onChange={(e) => {}}>
-                      {x.productStockId === editableRow ? (
+                      {x.productStockId === editableRowId ? (
                         <TextField
                           value={updatedPrice}
                           type="number"
@@ -198,19 +198,19 @@ export default function Product() {
                       <Button
                         sx={{ color: "#000000" }}
                         onClick={() => {
-                          if (editableRow !== null) {
-                            setEditableRow(null);
-
-                            // Update with api
-                            updateProduct(x.productStockId, x.quantity);
-                          } else {
-                            setEditableRow(x.productStockId);
+                          if (editableRowId === null) {
+                            setEditableRowId(x.productStockId);
                             setUpdatedName(x.productName);
                             setUpdatedPrice(x.price);
+                          } else {
+                            if (editableRowId === x.productStockId) {
+                              setEditableRowId(null);
+                              updateProduct(x.productStockId, x.quantity);
+                            }
                           }
                         }}
                       >
-                        {editableRow === x.productStockId ? (
+                        {editableRowId === x.productStockId ? (
                           <DoneIcon />
                         ) : (
                           <EditIcon />
@@ -219,6 +219,7 @@ export default function Product() {
                       <Button
                         sx={{ color: "#000000" }}
                         onClick={() => {
+                          setEditableRowId(null);
                           deleteProduct(x.productStockId);
                         }}
                       >
