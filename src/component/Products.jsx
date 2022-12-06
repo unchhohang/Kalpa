@@ -3,6 +3,10 @@
  */
 
 import {
+  Breadcrumbs,
+  Chip,
+  Divider,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -16,15 +20,38 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import Delete from "@mui/icons-material/Delete";
 import { Fab } from "@mui/material";
-import ProductCss from "../css/products.module.css"
-
+import ProductCss from "../css/products.module.css";
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import HomeIcon from "@mui/icons-material/Home";
 export default function Billing() {
   return (
     <div className="container">
-      <h1>Manage</h1>
-      <h2>Products</h2>
+      <Breadcrumbs>
+        <Link 
+          underline="hover" 
+          color="inherit" 
+          sx={{ display: 'flex', alignItems: 'center' }}
+          href="/">
+        <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          EBS
+        </Link>
+        <Link 
+          underline="hover" 
+          color="inherit"
+          sx={{ display: 'flex', alignItems: 'center' }}
+          href="/stock">
+        <ProductionQuantityLimitsIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          Product
+        </Link>
+        <Typography color="text.primary">Manage Product</Typography>
+      </Breadcrumbs>
+      <Divider >
+        <Chip label="Products" color="success"/>
+      </Divider>
+      {/* <h1>Manage</h1>
+      <h5 className={ProductCss.h5}>Products</h5> */}
 
-      <div className="customer-inputs">
+      <div className="customer-inputs" style={{'align-self': 'center !important', 'width': 'fit-content'}}>
         <div className="billing-customer-input">
           <TextField
             sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
@@ -40,9 +67,11 @@ export default function Billing() {
           />
         </div>
 
-        <Fab className="add-btn" size="large" color="success" aria-label="add">
-          <AddIcon />
-        </Fab>
+        <div className={ProductCss.addBtnWrpr}>
+          <Fab className={ProductCss.addBtn} size="large" color="success" aria-label="add">
+            <AddIcon />
+          </Fab>
+        </div>
       </div>
       <div>
         <TableContainer className={ProductCss.producttable}>

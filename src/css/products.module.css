@@ -8,8 +8,16 @@
     height: 50vh;
   }
   
-  .add-btn{
+  .addBtn{
     position: relative;
-  left: 23vw;
-  top: 22px;
+  /* left: 23vw;
+  top: 22px; */
+  }
+  .addBtnWrpr{
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .h5{
+    margin: 0px;
   }
