@@ -19,17 +19,17 @@ export default function DailyReport(props) {
   return (
     <div>
       <div className="heads">
-        <h1>Daily Report</h1>
-        <span>
+        {/* <h1>Daily Report</h1> */}
+        {/* <span> */}
           <Button
             className="pdf-btn"
             variant="contained"
             color="success"
-            size="small"
+            size="medium"
           >
-            Generate PDF
+            Export to PDF
           </Button>
-        </span>
+        {/* </span> */}
       </div>
       <div>
         <ReportTable data={props.data} />

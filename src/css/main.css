@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  min-width: 88vw;
+  /* min-width: 88vw; */
   background-color: #e3e4c4;
 }
 
@@ -37,10 +37,10 @@
 }
 
 .detail {
-  padding: 10px;
+  /* padding: 10px;
   margin: 10px;
   padding-bottom: 0;
-  margin-bottom: 0;
+  margin-bottom: 0; */
 }
 
 .sub-total {
@@ -70,8 +70,8 @@
 
 .pdf-btn{
   position: relative;
-  left: 23vw;
-  top: 22px;
+  /* left: 23vw; */
+  /* top: 22px; */
 }
 
 .report-delete{
@@ -90,14 +90,14 @@
 }
 
 .billing-customer-input {
-  width: 21%;
+  width: 45%;
   margin: 10px;
   padding: 10px;
 }
 
 .billing-action-table {
   overflow: auto;
-  height: 50vh;
+  /* height: 50vh; */
   /* margin: 10px;
   padding: 10px; */
 }

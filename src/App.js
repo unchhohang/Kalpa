@@ -8,13 +8,20 @@ import Report from "./component/Report";
 import NavSideBar from "./component/NavSideBar";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment"; // Imported for date picker accord to docs
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import { Grid } from "@mui/material";
 
 function App() {
   function Layout() {
     return (
       <>
-        <NavSideBar />
-        <Outlet />
+        <Grid container spacing={1}>
+          <Grid xs={2}>
+            <NavSideBar />
+          </Grid>
+          <Grid xs={10}>
+          <Outlet />
+          </Grid>
+        </Grid>
       </>
     );
   }
