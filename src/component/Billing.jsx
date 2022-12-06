@@ -4,6 +4,10 @@
 
 import { Edit } from "@mui/icons-material";
 import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -15,8 +19,13 @@ import {
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import Delete from "@mui/icons-material/Delete";
+import {SelectChangeEvent} from "@mui/material/Select";
 
-
+let staff;
+const selectStaff = (event: SelectChangeEvent) => {
+  //
+  console.log("hmmmm");
+}
 export default function Billing() {
   return (
     <div className="container">
@@ -47,11 +56,21 @@ export default function Billing() {
           />
         </div>
         <div className="billing-customer-input">
-          <TextField
-            sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
-            label="Staff Name"
-            variant="outlined"
-          />
+          <FormControl fullWidth>
+          <InputLabel id="staff-select">Staff</InputLabel>
+          <Select
+          sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
+          labelId="staff-select"
+          id="staff-select"
+          value={staff}
+          label="Staff"
+          onChange={selectStaff}
+          >
+            <MenuItem value={"Ram"}>Ram</MenuItem>
+            <MenuItem value={"Shyam"}>Shyam</MenuItem>
+            <MenuItem value={"Hari"}>Hari</MenuItem>
+          </Select>
+          </FormControl>
         </div>
       </div>
       <div>

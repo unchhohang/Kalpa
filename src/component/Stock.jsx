@@ -3,6 +3,11 @@
  */
 
  import {
+   Breadcrumbs,
+  Chip,
+  Divider,
+  Link,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -13,19 +18,44 @@
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import Delete from "@mui/icons-material/Delete";
+import HomeIcon from "@mui/icons-material/Home";
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 
 export default function Billing() {
   return (
     <div className="container">
-      <h1>Manage</h1>
-      <h2>Stock</h2>
+
+      <Breadcrumbs>
+        <Link 
+          underline="hover" 
+          color="inherit" 
+          sx={{ display: 'flex', alignItems: 'center' }}
+          href="/">
+        <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          EBS
+        </Link>
+        <Link 
+          underline="hover" 
+          color="inherit"
+          sx={{ display: 'flex', alignItems: 'center' }}
+          href="/stock">
+        <InventoryIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          Stock
+        </Link>
+        <Typography color="text.primary">Manage stock</Typography>
+      </Breadcrumbs>
+      <Divider >
+        <Chip label="Stock table" color="success"/>
+      </Divider>
+      {/* <h1>Manage</h1>
+      <h2>Stock</h2> */}
 
     
 
       <div>
-        <TableContainer className="billing-action-table">
-          <Table sx={{ minWidth: 650}} aria-label="simple table">
+        <TableContainer className="billing-action-table" component={Paper}>
+          <Table sx aria-label="simple table">
             <TableHead sx={{backgroundColor: '#D9D9D9'}}>
               <TableRow>
                 <TableCell>
