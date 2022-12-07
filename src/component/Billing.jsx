@@ -2,7 +2,7 @@
  * Screen for billing
  */
 
-import { Edit } from "@mui/icons-material";
+import React from "react";
 import {
   Box,
   Button,
@@ -19,15 +19,17 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TableRow,
   TextField,
   Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Delete from "@mui/icons-material/Delete";
 import { SelectChangeEvent } from "@mui/material/Select";
+import DeletePopup from "./DeletePopup";
+import BillCheckout from "./BillCheckout";
 
 let staff;
 const selectStaff = (event: SelectChangeEvent) => {
@@ -35,6 +37,15 @@ const selectStaff = (event: SelectChangeEvent) => {
   console.log("hmmmm");
 };
 export default function Billing() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const name = "Billing";
+
+  const [openb, setOpenb] = React.useState(false);
+  const handleOpenb = () => setOpenb(true);
+  const handleCloseb = () => setOpenb(false);
+  const nameb = "Billing";
   return (
     <>
       <div className="container">
@@ -63,7 +74,7 @@ export default function Billing() {
             />
           </div>
           <div className="billing-customer-input">
-          <TextField
+            <TextField
               sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
               label="Staff Name"
               variant="outlined"
@@ -126,28 +137,17 @@ export default function Billing() {
                   </TableCell>
                   <TableCell align="left">
                     <EditIcon />
-                    <Delete />
-                  </TableCell>
-                </TableRow>
-                <TableRow
-                  // key={}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Typography>Sathu</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>200</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>2</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>400</Typography>
-                  </TableCell>
-                  <TableCell align="left">
-                    <EditIcon />
-                    <Delete />
+                    <Button
+                      onClick={handleOpen}
+                      variant="outlined"
+                      color="inherit"
+                      startIcon={<DeleteIcon />}
+                    ></Button>
+                    <DeletePopup
+                      open={open}
+                      name={name}
+                      handleClose={handleClose}
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -183,7 +183,7 @@ export default function Billing() {
           </TableContainer>
         </div>
         <Divider />
-      
+
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} justifyContent="center">
             <Grid xs={6}>
@@ -214,7 +214,15 @@ export default function Billing() {
                     type="number"
                     variant="outlined"
                   />
-                  <Button style={{'margin-left': '10px'}} variant="contained" color="success" size="large" fullWidth>Order</Button>
+                  <Button
+                    style={{ "margin-left": "10px" }}
+                    variant="contained"
+                    color="success"
+                    size="large"
+                    fullWidth
+                  >
+                    Order
+                  </Button>
                 </ListItem>
               </List>
             </Grid>
@@ -243,7 +251,21 @@ export default function Billing() {
                     label="Given Amount"
                     variant="outlined"
                   />
-                  <Button style={{'margin-left': '10px'}} variant="contained" color="warning" size="large" fullWidth>Procced</Button>
+                  <Button
+                    style={{ "margin-left": "10px" }}
+                    variant="contained"
+                    color="warning"
+                    size="large"
+                    fullWidth
+                    onClick={handleOpenb}
+                  >
+                    Procced
+                  </Button>
+                  <BillCheckout
+                    open={openb}
+                    name={nameb}
+                    handleClose={handleCloseb}
+                  />
                 </ListItem>
               </List>
             </Grid>
