@@ -2,7 +2,7 @@
  * Screen for billing
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Button,
@@ -30,14 +30,17 @@ import Delete from "@mui/icons-material/Delete";
 import { SelectChangeEvent } from "@mui/material/Select";
 import DeletePopup from "./DeletePopup";
 import BillCheckout from "./BillCheckout";
+import { useState } from "react";
+import axios from "axios";
 
 let staff;
-const selectStaff = (event: SelectChangeEvent) => {
+const selectStaff = (event) => {
   //
   console.log("hmmmm");
 };
+
 export default function Billing() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const name = "Billing";
@@ -46,6 +49,78 @@ export default function Billing() {
   const handleOpenb = () => setOpenb(true);
   const handleCloseb = () => setOpenb(false);
   const nameb = "Billing";
+
+  // State hook to manage
+  const [productStock, setProductStock] = useState();
+  const [orders, setOrders] = useState();
+  const [bill, setBill] = useState();
+
+  // Use effect to get ProductStock and active Bill
+
+  useEffect(() => {
+    // create Active bill and get it too
+    createActiveBill();
+
+    getProductStock();
+  }, []);
+
+  // Create new bill and get Active bill with orders
+  // Creates active bill or if already there just gets it
+
+  function createActiveBill() {
+    axios
+      .post("/billing")
+      .then((data) => {
+        getActiveBillOrders();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  // Function gets productStocks
+
+  function getProductStock() {
+    axios
+      .get("/productStock")
+      .then((data) => setProductStock(data.data))
+      .catch((err) => console.log(err));
+  }
+
+  // Funtion gets orders
+
+  function getOrders(billingId) {
+    axios
+      .get("/order", { params: { id: billingId } })
+      .then((data) => setOrders(data.data))
+      .catch((err) => console.log(err));
+  }
+
+  // Function gets bills
+
+  function getActiveBillOrders() {
+    axios
+      .get("/billing/activeBill")
+      .then((data) => {
+        console.log(`activeBill...`);
+        console.log(data.data);
+        let bill = data.data;
+
+        setBill(bill);
+        setOrders(bill.billingId);
+      })
+
+      .catch((err) => console.log(err));
+  }
+
+  if (
+    productStock === undefined &&
+    orders === undefined &&
+    bill === undefined
+  ) {
+    <div>...Loading</div>;
+  }
+
   return (
     <>
       <div className="container">
@@ -79,21 +154,6 @@ export default function Billing() {
               label="Staff Name"
               variant="outlined"
             />
-            {/* <FormControl fullWidth>
-              <InputLabel id="staff-select">Staff</InputLabel>
-              <Select
-                sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
-                labelId="staff-select"
-                id="staff-select"
-                value={staff}
-                label="Staff"
-                onChange={selectStaff}
-              >
-                <MenuItem value={"Ram"}>Ram</MenuItem>
-                <MenuItem value={"Shyam"}>Shyam</MenuItem>
-                <MenuItem value={"Hari"}>Hari</MenuItem>
-              </Select>
-            </FormControl> */}
           </div>
         </div>
         <div>
