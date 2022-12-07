@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment/moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/main.css";
 import DailyReport from "./DailyReport";
 import DateReport from "./DateReport";
@@ -27,21 +27,61 @@ import TabPanel from "@mui/lab/TabPanel";
 import HomeIcon from "@mui/icons-material/Home";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 
+import axios from "axios";
+
+
 export default function Report() {
   /**
    * Toogle false show <DailyReport>
    * <DateReport/>
    */
 
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = useState("1");
+  const [bills, setBills] = useState([]);
+  const [productStocks, setProductStocks] = useState([]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  // Using use effect to render bills and productStocks
+  // Based on current date
+
+  useEffect(() => {
+    // get current date to set current dates bills
+
+    let dateArray = moment().format().split("T");
+    let currentDate = dateArray[0];
+
+    console.log(`useEffect in effect...`);
+    console.log(bills);
+    getBills(currentDate);
+    getProductStocks();
+  }, [value]);
+
+  // Retrive bills by date
+  function getBills(date) {
+    axios
+      .get("/report", { params: { date: date } })
+      .then((data) => {
+        console.log("api report");
+        console.log(data.data);
+        setBills(data.data);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function getProductStocks() {
+    axios
+      .get("/productStock")
+      .then((data) => setProductStocks(data.data))
+      .catch((err) => console.log(err));
+  }
+
   return (
     <>
-      <div className="container">
+      <div>
+
         <Breadcrumbs>
           <Link
             underline="hover"
@@ -63,9 +103,7 @@ export default function Report() {
           </Link>
           <Typography color="text.primary">Manage Report</Typography>
         </Breadcrumbs>
-        {/* <Divider >
-        <Chip label="Report" color="success"/>
-      </Divider> */}
+
 
         <Box sx={{ width: "100%", typography: "body1" }}>
           <TabContext value={value}>
@@ -80,10 +118,12 @@ export default function Report() {
               </TabList>
             </Box>
             <TabPanel value="1">
+
               <DailyReport data={fake} />
             </TabPanel>
             <TabPanel value="2">
               <DateReport data={fake} />
+
             </TabPanel>
           </TabContext>
         </Box>
@@ -91,75 +131,3 @@ export default function Report() {
     </>
   );
 }
-
-// Fakes are creating Fakes
-const fake = [
-  {
-    billNo: 22,
-    date: moment().format().toString(),
-    orders: [
-      {
-        productName: "satu",
-        price: 100,
-        quantity: 20,
-        amount: 2000,
-      },
-      {
-        productName: "Orange",
-        price: 15,
-        quantity: 2,
-        amount: 30,
-      },
-      {
-        productName: "coke",
-        price: 70,
-        quantity: 2,
-        amount: 140,
-      },
-    ],
-    subAmount: 2170,
-    customerName: "Simon",
-    customerAddress: "Kuleshor",
-    contactNo: 9856560000,
-    printedBy: "INndra",
-    paymentMode: "Cash",
-    discount: 50,
-    taxableAmount: 500,
-    vatAmount: 65,
-    totalAmount: 5656,
-  },
-  {
-    billNo: 2,
-    date: moment().format(),
-    orders: [
-      {
-        productName: "Lapsi",
-        price: 50,
-        quantity: 11,
-        amount: 555,
-      },
-      {
-        productName: "Lacto",
-        price: 10,
-        quantity: 5,
-        amount: 50,
-      },
-      {
-        productName: "aalu",
-        price: 100,
-        quantity: 1,
-        amount: 150,
-      },
-    ],
-    subAmount: 255,
-    customerName: "Dio",
-    customerAddress: "Balkhu",
-    contactNo: 9856550000,
-    printedBy: "Uttam",
-    paymentMode: "QR",
-    discount: 50,
-    taxableAmount: 500,
-    vatAmount: 65,
-    totalAmount: 568,
-  },
-];

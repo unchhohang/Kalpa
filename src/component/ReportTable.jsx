@@ -4,6 +4,7 @@
 
 import {
   Box,
+  Button,
   Divider,
   Grid,
   List,
@@ -18,25 +19,43 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import axios from "axios";
+import moment from "moment";
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 
 export default function ReportTable(props) {
-  console.log(props.data);
-  let data = props.data;
+  let bills = props.bills;
+  const [bill, setBill] = useState(bills[0]);
+  const [orders, setOrders] = useState([]);
+  const [billDate, setBillDate] = useState();
 
-  const [bill, setBill] = useState(data[1]);
+  useEffect(() => {
+    if (bill !== undefined) {
+      getOrders(bill.billingId);
 
-  let billLength = data.length;
+      // Split only date
+      let dArray = bill.bill_date.split("T");
+      setBillDate(dArray[0]);
+    }
+  }, [bill]);
+
+  function getOrders(billingId) {
+    axios
+      .get("/order", { params: { id: billingId } })
+      .then((data) => setOrders(data.data))
+      .catch((err) => console.log(err));
+  }
 
   return (
     <div className="table-container">
       <div className="table-top">
         <span>
-          <h3>Bill NO: {bill.billNo}</h3>
+          <h3>Inovice NO: {bill.invoiceNo}</h3>
         </span>
         <span>
-          <h3>Date: {bill.date}</h3>
+          <h3>Date: {billDate}</h3>
         </span>
       </div>
       <div>
@@ -59,50 +78,53 @@ export default function ReportTable(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {bill.orders.map((x, index) => {
-                return (
-                  <TableRow
-                    // key={}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell>{x.productName}</TableCell>
-                    <TableCell>{x.price}</TableCell>
-                    <TableCell>{x.quantity}</TableCell>
-                    <TableCell>{x.amount}</TableCell>
-                  </TableRow>
-                );
-              })}
+              {orders.length !== 0 &&
+                orders.map((x, index) => {
+                  return (
+                    <TableRow
+                      // key={}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell>{x.productName}</TableCell>
+                      <TableCell>{x.price}</TableCell>
+                      <TableCell>{x.quantity}</TableCell>
+                      <TableCell>{x.price * x.quantity}</TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>
 
         <div>
-          <span className="sub-total">Sub Total: {bill.subAmount} </span>
+          <span className="sub-total">Sub Total: {bill.amount} </span>
         </div>
       </div>
-      <Divider/>
+      <Divider />
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} justifyContent="center">
           <Grid xs={3}>
             <List>
               <ListItem>
-                <Typography>Customer Name: {bill.customerName}</Typography>
+                <Typography>Customer Name: {bill.customer_name}</Typography>
               </ListItem>
               <ListItem>
-                <Typography>Customer Address: {bill.customerAddress}</Typography>
+                <Typography>
+                  Customer Address: {bill.customer_address}
+                </Typography>
               </ListItem>
               <ListItem>
-                <Typography>Contact No: {bill.contactNo} </Typography>
+                <Typography>Contact No: {bill.customer_no} </Typography>
               </ListItem>
             </List>
           </Grid>
           <Grid xs={3}>
             <List>
               <ListItem>
-                <Typography>Printed By: {bill.printedBy}</Typography>
+                <Typography>Printed By: {bill.printed_by}</Typography>
               </ListItem>
               <ListItem>
-                <Typography>Payment Mode: {bill.paymentMode}</Typography>
+                <Typography>Payment Mode: {bill.payment_method}</Typography>
               </ListItem>
               <ListItem>
                 <Typography>Discount: {bill.discount}</Typography>
@@ -112,13 +134,13 @@ export default function ReportTable(props) {
           <Grid xs={3}>
             <List>
               <ListItem>
-                <Typography>Taxable amount: {bill.taxableAmount}</Typography>
+                <Typography>Taxable amount: {bill.taxable_amount}</Typography>
               </ListItem>
               <ListItem>
-                <Typography>VAT amount: {bill.vatAmount}</Typography>
+                <Typography>VAT amount: {bill.tax_amount}</Typography>
               </ListItem>
               <ListItem>
-                <Typography>Total amount: {bill.totalAmount}</Typography>
+                <Typography>Total amount: {bill.total_amount}</Typography>
               </ListItem>
             </List>
           </Grid>
@@ -127,12 +149,35 @@ export default function ReportTable(props) {
 
       <div>
         <Pagination
-          count={billLength}
+          count={bills.length}
           onChange={(e, p) => {
             console.log(`in page ${p}`);
-            setBill(data[p - 1]);
+            setBill(bills[p - 1]);
           }}
         />
+      </div>
+
+      <div className="report-delete">
+        <Button
+          variant="contained"
+          component="label"
+          color="error"
+          size="large"
+          sx={{ margin: "10px" }}
+          onClick={() => {
+            console.log(bill.invoiceNo);
+            axios
+              .delete("/billing", { params: { invoiceId: bill.invoiceNo } })
+              .then((data) => {
+                let dArray = moment().format().split("T");
+                let cDate = dArray[0];
+                props.getBills(cDate);
+              })
+              .catch((err) => console.log(err));
+          }}
+        >
+          Delete
+        </Button>
       </div>
     </div>
   );
