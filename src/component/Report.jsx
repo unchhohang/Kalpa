@@ -26,7 +26,9 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import HomeIcon from "@mui/icons-material/Home";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+
 import axios from "axios";
+
 
 export default function Report() {
   /**
@@ -79,6 +81,7 @@ export default function Report() {
   return (
     <>
       <div>
+
         <Breadcrumbs>
           <Link
             underline="hover"
@@ -101,6 +104,7 @@ export default function Report() {
           <Typography color="text.primary">Manage Report</Typography>
         </Breadcrumbs>
 
+
         <Box sx={{ width: "100%", typography: "body1" }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -114,10 +118,12 @@ export default function Report() {
               </TabList>
             </Box>
             <TabPanel value="1">
-              <DailyReport bills={bills} stocks={productStocks} />
+
+              <DailyReport data={fake} />
             </TabPanel>
             <TabPanel value="2">
-              <DateReport bills={bills} getBills={getBills} />
+              <DateReport data={fake} />
+
             </TabPanel>
           </TabContext>
         </Box>
