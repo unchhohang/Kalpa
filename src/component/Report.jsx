@@ -119,10 +119,10 @@ export default function Report() {
             </Box>
             <TabPanel value="1">
 
-              <DailyReport data={fake} />
+              <DailyReport bills={bills} />
             </TabPanel>
             <TabPanel value="2">
-              <DateReport data={fake} />
+              <DateReport bills={bills} />
 
             </TabPanel>
           </TabContext>
