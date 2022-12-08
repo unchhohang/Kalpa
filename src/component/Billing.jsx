@@ -24,14 +24,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Delete from "@mui/icons-material/Delete";
-import { SelectChangeEvent } from "@mui/material/Select";
-import DeletePopup from "./DeletePopup";
 import BillCheckout from "./BillCheckout";
 import { useState } from "react";
 import axios from "axios";
+import useLocalStorage from "../hooks/UseLocalStorage";
+import SelectProductInput from "./SelectProductInput";
+import BillingOrder from "./BillingOrder";
 
 let staff;
 const selectStaff = (event) => {
@@ -40,9 +38,6 @@ const selectStaff = (event) => {
 };
 
 export default function Billing() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const name = "Billing";
 
   const [openb, setOpenb] = React.useState(false);
@@ -50,10 +45,29 @@ export default function Billing() {
   const handleCloseb = () => setOpenb(false);
   const nameb = "Billing";
 
-  // State hook to manage
+  // State hook to manage for datas needed billing
   const [productStock, setProductStock] = useState();
   const [orders, setOrders] = useState();
   const [bill, setBill] = useState();
+
+  // State for billing page input fields
+
+  // Local storage hooks
+  const [customerName, setCustomerName] = useLocalStorage("customerName", "");
+  const [customerAddress, setCustomerAddress] = useLocalStorage(
+    "customerAddress",
+    ""
+  );
+  const [customerNo, setCustomerNo] = useLocalStorage("customerNo", "");
+  const [staffName, setStaffName] = useLocalStorage("staffName", "");
+
+  // States for order input
+  const [orderProduct, setOrderProduct] = useState();
+  // const [orderPrice, setOrderPrice] = useState("");
+  const [orderQty, setOrderQty] = useState(0);
+
+  // Hooks state for calc
+  const [subTotal, setSubTotal] = useState(0);
 
   // Use effect to get ProductStock and active Bill
 
@@ -78,6 +92,12 @@ export default function Billing() {
       });
   }
 
+  // Refresh order for some reason billingId props is showing undefined. Why??
+
+  function refreshOrders() {
+    getOrders(bill.billlingId);
+  }
+
   // Function gets productStocks
 
   function getProductStock() {
@@ -92,7 +112,19 @@ export default function Billing() {
   function getOrders(billingId) {
     axios
       .get("/order", { params: { id: billingId } })
-      .then((data) => setOrders(data.data))
+      .then((data) => {
+        let orders = data.data;
+        setOrders(orders);
+
+        // get subTotal
+        let totals = orders.map((x, index) => {
+          return x.price * x.orderQuantity;
+        });
+
+        let sTotal = totals.reduce((accum, cValue) => accum + cValue);
+
+        setSubTotal(sTotal);
+      })
       .catch((err) => console.log(err));
   }
 
@@ -102,23 +134,68 @@ export default function Billing() {
     axios
       .get("/billing/activeBill")
       .then((data) => {
-        console.log(`activeBill...`);
-        console.log(data.data);
         let bill = data.data;
 
+        console.log(`in get active bill orders`);
+
+        console.log(bill);
+
         setBill(bill);
-        setOrders(bill.billingId);
+        getOrders(bill.billingId);
       })
 
       .catch((err) => console.log(err));
   }
+
+  // Function get and set price based on selected product pirce
+
+  function handleOrder(orderId) {
+    // Find product price based on order id
+
+    let matched = productStock.filter((x) => x.productStockId === orderId);
+
+    setOrderProduct(matched[0]);
+  }
+
+  // Handle price change
+
+  function handleQtyChange(qty) {
+    console.log(qty);
+    if (qty >= 0) {
+      setOrderQty(qty);
+    }
+  }
+
+  // on order btn clicked
+
+  function onOrderClick() {
+    let billingId = bill.billingId;
+    let productStockId = orderProduct.productStockId;
+    let orderQuantity = orderQty;
+
+    if (orderQuantity !== 0) {
+      axios
+        .post("order", {
+          billingId: billingId,
+          productStockId: productStockId,
+          orderQuantity: orderQuantity,
+        })
+        .then((data) => {
+          // refreshOrders(); // From here its going wrong
+          getOrders(billingId);
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+
+  // Return load if states are not ready
 
   if (
     productStock === undefined &&
     orders === undefined &&
     bill === undefined
   ) {
-    <div>...Loading</div>;
+    return <div>...Loading</div>;
   }
 
   return (
@@ -131,7 +208,11 @@ export default function Billing() {
             <TextField
               sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
               label="Customer Name"
+              value={customerName}
               variant="outlined"
+              onChange={(e) => {
+                setCustomerName(e.target.value);
+              }}
             />
           </div>
           <div className="billing-customer-input">
@@ -139,6 +220,10 @@ export default function Billing() {
               sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
               label="Customer Address"
               variant="outlined"
+              value={customerAddress}
+              onChange={(e) => {
+                setCustomerAddress(e.target.value);
+              }}
             />
           </div>
           <div className="billing-customer-input">
@@ -146,6 +231,10 @@ export default function Billing() {
               sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
               label="Contact No"
               variant="outlined"
+              value={customerNo}
+              onChange={(e) => {
+                setCustomerNo(e.target.value);
+              }}
             />
           </div>
           <div className="billing-customer-input">
@@ -153,94 +242,20 @@ export default function Billing() {
               sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
               label="Staff Name"
               variant="outlined"
+              value={staffName}
+              onChange={(e) => {
+                setStaffName(e.target.value);
+              }}
             />
           </div>
         </div>
         <div>
-          <TableContainer className="billing-action-table">
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead sx={{ backgroundColor: "#D9D9D9" }}>
-                <TableRow>
-                  <TableCell>
-                    <h3>Product Name</h3>
-                  </TableCell>
-                  <TableCell>
-                    <h3>Price</h3>
-                  </TableCell>
-                  <TableCell>
-                    <h3>Quantity</h3>
-                  </TableCell>
-                  <TableCell>
-                    <h3>Amount</h3>
-                  </TableCell>
-                  <TableCell>
-                    <h3>Action</h3>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow
-                  // key={}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Typography>Sathu</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>200</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>2</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography>400</Typography>
-                  </TableCell>
-                  <TableCell align="left">
-                    <EditIcon />
-                    <Button
-                      onClick={handleOpen}
-                      variant="outlined"
-                      color="inherit"
-                      startIcon={<DeleteIcon />}
-                    ></Button>
-                    <DeletePopup
-                      open={open}
-                      name={name}
-                      handleClose={handleClose}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={2} />
-                  <TableCell colSpan={2} align="left">
-                    Subtotal
-                  </TableCell>
-                  <TableCell align="left">Nrs. 500</TableCell>
-                </TableRow>
-                <Divider />
-                {/* <TableRow selected variant="footer">
-                  <TableCell colSpan={2} align="right">
-                    <TextField
-                      id="outlined-product"
-                      label="Enter Product"
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Chip color="success" align="left" label="Nrs. 500" />
-                  </TableCell>
-                  <TableCell colSpan={2} align="left">
-                    <TextField
-                      id="outlined-qty"
-                      label="Enter quantity"
-                      type="number"
-                      variant="outlined"
-                    />
-                  </TableCell>
-                </TableRow> */}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <BillingOrder
+            orders={orders}
+            getOrders={getOrders}
+            refreshOrders={refreshOrders}
+            subTotal={subTotal}
+          />
         </div>
         <Divider />
 
@@ -249,11 +264,18 @@ export default function Billing() {
             <Grid xs={6}>
               <List>
                 <ListItem key={1}>
-                  <TextField
+                  {/* <TextField
                     fullWidth
                     id="outlined-product"
                     label="Enter Product"
                     variant="outlined"
+                  /> */}
+
+                  {/* Select product */}
+
+                  <SelectProductInput
+                    productStock={productStock}
+                    handleOrder={handleOrder}
                   />
                 </ListItem>
                 <ListItem key={2}>
@@ -263,6 +285,10 @@ export default function Billing() {
                     label="Enter quantity"
                     type="number"
                     variant="outlined"
+                    value={orderQty}
+                    onChange={(e) => {
+                      handleQtyChange(e.target.value);
+                    }}
                   />
                 </ListItem>
                 <ListItem>
@@ -270,7 +296,9 @@ export default function Billing() {
                     disabled
                     fullWidth
                     id="outlined-price"
-                    label="Nrs. 500"
+                    value={
+                      orderProduct === undefined ? " " : orderProduct.price
+                    }
                     type="number"
                     variant="outlined"
                   />
@@ -280,6 +308,9 @@ export default function Billing() {
                     color="success"
                     size="large"
                     fullWidth
+                    onClick={() => {
+                      onOrderClick();
+                    }}
                   >
                     Order
                   </Button>

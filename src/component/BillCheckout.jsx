@@ -35,7 +35,6 @@ const style = {
 };
 
 const BillCheckout = (props) => {
-  console.log(props.open);
   return (
     <Modal keepMounted open={props.open} onClose={props.handleClose}>
       <Card sx={style}>
