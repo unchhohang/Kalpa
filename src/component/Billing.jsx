@@ -68,6 +68,13 @@ export default function Billing() {
 
   // Hooks state for calc
   const [subTotal, setSubTotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [givenAmount, setGivenAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [returnAmount, setReturnAmount] = useState(0);
+
+  // modePay
+  const [modePay, setModePay] = useState("cash");
 
   // Use effect to get ProductStock and active Bill
 
@@ -77,6 +84,14 @@ export default function Billing() {
 
     getProductStock();
   }, []);
+
+  // In case of change in subTotal, discount, and givenAmount
+  useEffect(() => {
+    let totalAmount = subTotal - discount;
+    setTotalAmount(totalAmount);
+
+    if (givenAmount >= totalAmount) setReturnAmount(givenAmount - totalAmount);
+  }, [discount, givenAmount, subTotal]);
 
   // Create new bill and get Active bill with orders
   // Creates active bill or if already there just gets it
@@ -184,6 +199,54 @@ export default function Billing() {
         })
         .catch((err) => console.log(err));
     }
+  }
+
+  // Finally pay
+
+  function finallyPay(billId) {
+    let pay = {
+      billingId: billId,
+
+      customerName: customerName,
+      customerPAN: "",
+      customerAddress: customerAddress,
+      customerNo: customerNo,
+
+      amount: subTotal,
+      discount: discount,
+
+      totalAmount: totalAmount,
+      syncWithIRD: true,
+      isBillPrinted: true,
+      isBillActive: false,
+
+      enteredBy: staffName,
+      printedBy: staffName,
+      isRealTime: true,
+      paymentMethod: modePay,
+
+      isDeleted: false,
+
+      printCount: 1,
+    };
+
+    axios
+      .patch("/billing/pay", pay)
+      .then((data) => {
+        createActiveBill();
+        handleCloseb();
+
+        // default all params input
+        setDiscount(0);
+        setGivenAmount(0);
+        setSubTotal(0);
+        setTotalAmount(0);
+        setReturnAmount(0);
+        setCustomerName("");
+        setCustomerNo("");
+        setCustomerAddress("");
+      })
+      .catch((err) => console.log(err));
   }
 
   // Return load if states are not ready
@@ -322,15 +385,15 @@ export default function Billing() {
                     fullWidth
                     id="outlined-discount"
                     label="Discount"
+                    value={discount}
                     variant="outlined"
-                  />
-                </ListItem>
-                <ListItem>
-                  <TextField
-                    fullWidth
-                    id="outlined-vat"
-                    label="Vat %"
-                    variant="outlined"
+                    type="number"
+                    onChange={(e) => {
+                      let discount = e.target.value;
+                      if (discount >= 0) {
+                        setDiscount(discount);
+                      }
+                    }}
                   />
                 </ListItem>
                 <ListItem>
@@ -338,7 +401,16 @@ export default function Billing() {
                     fullWidth
                     id="outlined-given-amt"
                     label="Given Amount"
+                    type="number"
                     variant="outlined"
+                    value={givenAmount}
+                    onChange={(e) => {
+                      let given = e.target.value;
+
+                      if (given >= 0) {
+                        setGivenAmount(given);
+                      }
+                    }}
                   />
                   <Button
                     style={{ "margin-left": "10px" }}
@@ -346,14 +418,29 @@ export default function Billing() {
                     color="warning"
                     size="large"
                     fullWidth
-                    onClick={handleOpenb}
+                    onClick={(e) => {
+                      if (givenAmount >= totalAmount && subTotal !== 0) {
+                        handleOpenb();
+                      }
+                    }}
                   >
                     Procced
                   </Button>
                   <BillCheckout
+                    orders={orders}
                     open={openb}
                     name={nameb}
+                    billId={bill?.billingId}
                     handleClose={handleCloseb}
+                    subTotal={subTotal}
+                    discount={discount}
+                    totalAmount={totalAmount}
+                    givenAmount={givenAmount}
+                    returnAmount={returnAmount}
+                    modePay={modePay}
+                    setModePay={setModePay}
+                    staffName={staffName}
+                    finallyPay={finallyPay}
                   />
                 </ListItem>
               </List>

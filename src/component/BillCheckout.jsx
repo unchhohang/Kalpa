@@ -24,6 +24,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { DesignServices } from "@mui/icons-material";
+import moment from "moment";
 // import BillingCss from "../css/billing.module.css";
 // import DeletePopup from "./DeletePopup";
 
@@ -41,13 +42,22 @@ const style = {
 };
 
 const BillCheckout = (props) => {
+  // for sake of current date
+  let mDate = moment().format().split("T");
+  let D = mDate[0];
+
+  let orders = props.orders;
+
+  console.log(`orders in Bill checkout`);
+  console.log(JSON.stringify(orders));
+
   return (
     <Modal keepMounted open={props.open} onClose={props.handleClose}>
       <Card sx={style}>
         <CardContent>
           <Grid container spacing={2}>
             <Grid sx={6} md={6} align="left">
-              <Typography>Date: 2022-12-09 </Typography>
+              <Typography>Date: {D} </Typography>
             </Grid>
             <Grid sx={6} md={6} align="right">
               <Button onClick={props.handleClose}>
@@ -74,83 +84,32 @@ const BillCheckout = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow
-                  // key={}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Typography>Sathu</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">200</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">2</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">400</Typography>
-                  </TableCell>
-                  <TableRow />
-                </TableRow>
-                <TableRow
-                  // key={}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Typography>Sathu</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">200</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">2</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">400</Typography>
-                  </TableCell>
-                  <TableRow />
-                </TableRow>
-                <TableRow
-                  // key={}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Typography>Sathu</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">200</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">2</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">400</Typography>
-                  </TableCell>
-                  <TableRow />
-                </TableRow>
-                <TableRow
-                  // key={}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Typography>Sathu</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">200</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">2</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography align="center">400</Typography>
-                  </TableCell>
-                  <TableRow />
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={4}>
-                    <Divider />
-                  </TableCell>
-                </TableRow>
+                {orders?.map((x, index) => {
+                  return (
+                    <TableRow
+                      // key={}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell>
+                        <Typography>{x.productName}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography align="center">{x.price}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography align="center">
+                          {x.orderQuantity}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography align="center">
+                          {x.price * x.orderQuantity}
+                        </Typography>
+                      </TableCell>
+                      <TableRow />
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>
@@ -166,28 +125,30 @@ const BillCheckout = (props) => {
                     <TableRow>
                       <TableCell>
                         <Typography>
-                          Sub amount: <strong>Nrs. 500</strong>
+                          Sub amount: <strong>Nrs. {props.subTotal}</strong>
                         </Typography>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <Typography>
-                          Discount: <strong>Nrs. 500</strong>
+                          Discount: <strong>Nrs. {props.discount}</strong>
                         </Typography>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <Typography>
-                          Given amount: <strong>Nrs. 500</strong>
+                          Given amount:{" "}
+                          <strong>Nrs. {props.givenAmount}</strong>
                         </Typography>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <Typography>
-                          Return amount: <strong>Nrs. 1000</strong>
+                          Return amount:{" "}
+                          <strong>Nrs. {props.returnAmount}</strong>
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -196,7 +157,8 @@ const BillCheckout = (props) => {
                     <TableRow>
                       <TableCell align="center">
                         <Typography>
-                          Total amount: <strong>Nrs. 1000</strong>
+                          Total amount:{" "}
+                          <strong>Nrs. {props.totalAmount}</strong>
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -207,8 +169,11 @@ const BillCheckout = (props) => {
                           <RadioGroup
                             row
                             aria-labelledby="payment mode"
-                            defaultValue="qr"
+                            defaultValue={props.modePay}
                             name="radio-buttons-group"
+                            onClick={(e) => {
+                              props.setModePay(e.target.value);
+                            }}
                           >
                             <FormControlLabel
                               value="cash"
@@ -234,7 +199,7 @@ const BillCheckout = (props) => {
                       <TableCell>
                         <TableRow>
                           <Typography align="center">
-                            <strong>SIMO</strong>
+                            <strong>{props.staffName}</strong>
                           </Typography>
                         </TableRow>
                         <TableRow>
@@ -254,12 +219,22 @@ const BillCheckout = (props) => {
           </TableContainer>
         </CardContent>
         <CardActions>
+          <div>{props.billId}</div>
           <Button
             style={{ "margin-left": "10px" }}
             variant="contained"
             color="warning"
             size="large"
             fullWidth
+            onClick={() => {
+              console.log(`should fire`);
+              console.log(props.givenAmount);
+              console.log(props.totalAmount);
+              if (props.givenAmount >= props.totalAmount) {
+                console.log(`finally pay is going oe.e`);
+                props.finallyPay(props.billId);
+              }
+            }}
           >
             Done
           </Button>
