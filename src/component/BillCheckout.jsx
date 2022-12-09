@@ -3,6 +3,8 @@ import {
   Card,
   CardActions,
   CardContent,
+  Divider,
+  Grid,
   Typography,
 } from "@mui/material";
 import Modal from "@mui/material/Modal";
@@ -15,9 +17,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { SelectChangeEvent } from "@mui/material/Select";
+import CloseIcon from "@mui/icons-material/Close";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 // import BillingCss from "../css/billing.module.css";
 // import DeletePopup from "./DeletePopup";
 
@@ -27,7 +32,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 700,
-  height: 700,
+  height: 600,
   backgroundColor: "#E3E4C4",
   border: "2px solid #000",
   boxShadow: 0,
@@ -39,6 +44,16 @@ const BillCheckout = (props) => {
     <Modal keepMounted open={props.open} onClose={props.handleClose}>
       <Card sx={style}>
         <CardContent>
+          <Grid container spacing={2}>
+            <Grid sx={6} md={6} align="left">
+              <Typography>Date: 2022-12-09 </Typography>
+            </Grid>
+            <Grid sx={6} md={6} align="right">
+              <Button onClick={props.handleClose}>
+                <CloseIcon />
+              </Button>
+            </Grid>
+          </Grid>
           <TableContainer className="billing-action-table">
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead sx={{ backgroundColor: "#D9D9D9" }}>
@@ -47,13 +62,13 @@ const BillCheckout = (props) => {
                     <h3>Product Name</h3>
                   </TableCell>
                   <TableCell>
-                    <h3>Price</h3>
+                    <h3 align="center">Price</h3>
                   </TableCell>
                   <TableCell>
-                    <h3>Quantity</h3>
+                    <h3 align="center">Quantity</h3>
                   </TableCell>
                   <TableCell>
-                    <h3>Amount</h3>
+                    <h3 align="center">Amount</h3>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -66,57 +81,141 @@ const BillCheckout = (props) => {
                     <Typography>Sathu</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>200</Typography>
+                    <Typography align="center">200</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>2</Typography>
+                    <Typography align="center">2</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>400</Typography>
+                    <Typography align="center">400</Typography>
                   </TableCell>
                   <TableRow />
                 </TableRow>
-                <TableRow>
+                <TableRow
+                  // key={}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
                   <TableCell>
                     <Typography>Sathu</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>200</Typography>
+                    <Typography align="center">200</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>2</Typography>
+                    <Typography align="center">2</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>400</Typography>
+                    <Typography align="center">400</Typography>
                   </TableCell>
                   <TableRow />
                 </TableRow>
-                <TableCell>
-                  <Typography>Sub amount: Nrs. 500</Typography>
-                </TableCell>
-                <TableRow>
+                <TableRow
+                  // key={}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
                   <TableCell>
-                    <Typography>Discount. 500</Typography>
+                    <Typography>Sathu</Typography>
                   </TableCell>
+                  <TableCell>
+                    <Typography align="center">200</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography align="center">2</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography align="center">400</Typography>
+                  </TableCell>
+                  <TableRow />
+                </TableRow>
+                <TableRow
+                  // key={}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>
+                    <Typography>Sathu</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography align="center">200</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography align="center">2</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography align="center">400</Typography>
+                  </TableCell>
+                  <TableRow />
                 </TableRow>
                 <TableRow>
-                  <TableCell>
-                    <Typography>Taxable amount: Nrs. 500</Typography>
+                  <TableCell colSpan={4}>
+                    <Divider />
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Vat amount. 500</Typography>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TableContainer>
+            <Table>
+              <TableBody>
+              <TableRow>
+                  <TableCell colSpan={2}>
+                    <TableRow>
+                      <TableCell>
+                        <Typography>
+                          Total amount: <strong>Nrs. 500</strong>
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <Typography>
+                          Money Given: <strong>Nrs. 1000</strong>
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <Typography>
+                          Return: <strong>Nrs. 500</strong>
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
                   </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Total amount: Nrs. 500</Typography>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Typography>Staff: Simo</Typography>
+                  <TableCell colSpan={2}>
+                    <TableRow>
+                      <TableCell rowSpan={4}>
+                        <FormControl>
+                          <FormLabel id="payment">Mode of Payment</FormLabel>
+                          <RadioGroup
+                            aria-labelledby="payment mode"
+                            defaultValue="qr"
+                            name="radio-buttons-group"
+                          >
+                            <FormControlLabel
+                              value="cash"
+                              control={<Radio />}
+                              label="CASH"
+                            />
+                            <FormControlLabel
+                              value="qr"
+                              control={<Radio />}
+                              label="QR"
+                            />
+                            <FormControlLabel
+                              value="other"
+                              control={<Radio />}
+                              label="Other"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <Typography align="center"><strong>Simo</strong></Typography>
+                        <Divider />
+                        <Typography>For Kalpa Production</Typography>
+                      </TableCell>
+                    </TableRow>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -124,7 +223,15 @@ const BillCheckout = (props) => {
           </TableContainer>
         </CardContent>
         <CardActions>
-          <Button onClick={props.handleClose}>close</Button>
+          <Button
+            style={{ "margin-left": "10px" }}
+            variant="contained"
+            color="warning"
+            size="large"
+            fullWidth
+          >
+            Done
+          </Button>
         </CardActions>
       </Card>
     </Modal>
