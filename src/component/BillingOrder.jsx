@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -15,6 +16,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Delete from "@mui/icons-material/Delete";
 import { SelectChangeEvent } from "@mui/material/Select";
 import DeletePopup from "./DeletePopup";
+import DoneIcon from "@mui/icons-material/Done";
+import axios from "axios";
 
 export default function BillingOrder(props) {
   let orders = props.orders;
@@ -22,6 +25,38 @@ export default function BillingOrder(props) {
   const [open, setOpen] = useState(false);
   const deleteOpen = () => setOpen(true);
   const deleteClose = () => setOpen(false);
+
+  // Button and input field state
+  // when need to show input filed state most be true
+  const [updatedQty, setUpdatedQty] = useState();
+  const [editId, setEditId] = useState(null);
+
+  const [deleteId, setDeleteId] = useState();
+
+  // update order qty
+
+  function updateOrderQuantiy(orderId) {
+    axios
+      .patch("/order", {
+        orderId: orderId,
+        orderQuantity: updatedQty,
+      })
+      .then((data) => {
+        console.log(`order is refreshed`);
+        props.getOrders(props.bill.billingId);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function deleteOrder(orderId) {
+    axios
+      .delete("order", { params: { id: orderId } })
+      .then((data) => {
+        props.getOrders(props.bill.billingId);
+        deleteClose();
+      })
+      .catch((err) => console.log(err));
+  }
 
   if (orders === undefined) {
     return <div>...Loading</div>;
@@ -64,20 +99,57 @@ export default function BillingOrder(props) {
                     <Typography>{x.price}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography>{x.orderQuantity}</Typography>
+                    {editId === x.orderId ? (
+                      <TextField
+                        type="number"
+                        value={updatedQty}
+                        onChange={(e) => {
+                          let qty = e.target.value;
+
+                          if (qty >= 0 && qty <= x.quantity) setUpdatedQty(qty);
+                        }}
+                      />
+                    ) : (
+                      <Typography>{x.orderQuantity}</Typography>
+                    )}
                   </TableCell>
                   <TableCell>
                     <Typography>{x.price * x.orderQuantity}</Typography>
                   </TableCell>
                   <TableCell align="left">
-                    <EditIcon />
                     <Button
-                      onClick={deleteOpen}
+                      variant="outlined"
+                      color="inherit"
+                      onClick={() => {
+                        if (editId === null) {
+                          setEditId(x.orderId);
+                          setUpdatedQty(x.orderQuantity);
+                        } else {
+                          if (editId === x.orderId) {
+                            setEditId(null);
+                            updateOrderQuantiy(x.orderId);
+                          }
+                        }
+                      }}
+                    >
+                      {editId === x.orderId ? <DoneIcon /> : <EditIcon />}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        deleteOpen();
+                        setDeleteId(x.orderId);
+
+                      }}
                       variant="outlined"
                       color="inherit"
                       startIcon={<DeleteIcon />}
                     ></Button>
-                    <DeletePopup open={open} handleClose={deleteClose} />
+                    <DeletePopup
+                      open={open}
+                      id={deleteId}
+                      deleteByid={deleteOrder}
+                      handleClose={deleteClose}
+                    />
                   </TableCell>
                 </TableRow>
               );

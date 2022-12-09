@@ -92,12 +92,6 @@ export default function Billing() {
       });
   }
 
-  // Refresh order for some reason billingId props is showing undefined. Why??
-
-  function refreshOrders() {
-    getOrders(bill.billlingId);
-  }
-
   // Function gets productStocks
 
   function getProductStock() {
@@ -155,14 +149,18 @@ export default function Billing() {
     let matched = productStock.filter((x) => x.productStockId === orderId);
 
     setOrderProduct(matched[0]);
+    setOrderQty(0);
   }
 
   // Handle price change
 
   function handleQtyChange(qty) {
     console.log(qty);
-    if (qty >= 0) {
+    if (qty >= 0 && qty <= orderProduct.quantity) {
       setOrderQty(qty);
+    } else {
+      console.log(`not enough in the stock`);
+      console.log(`out of range`);
     }
   }
 
@@ -251,9 +249,9 @@ export default function Billing() {
         </div>
         <div>
           <BillingOrder
+            bill={bill}
             orders={orders}
             getOrders={getOrders}
-            refreshOrders={refreshOrders}
             subTotal={subTotal}
           />
         </div>
