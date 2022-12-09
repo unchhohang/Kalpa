@@ -23,6 +23,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import { DesignServices } from "@mui/icons-material";
 // import BillingCss from "../css/billing.module.css";
 // import DeletePopup from "./DeletePopup";
 
@@ -32,7 +33,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 700,
-  height: 600,
+  height: "auto",
   backgroundColor: "#E3E4C4",
   border: "2px solid #000",
   boxShadow: 0,
@@ -155,37 +156,56 @@ const BillCheckout = (props) => {
           </TableContainer>
           <TableContainer>
             <Table>
+              <TableHead>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+              </TableHead>
               <TableBody>
-              <TableRow>
-                  <TableCell colSpan={2}>
+                <TableRow>
+                  <TableCell>
                     <TableRow>
                       <TableCell>
                         <Typography>
-                          Total amount: <strong>Nrs. 500</strong>
+                          Sub amount: <strong>Nrs. 500</strong>
                         </Typography>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <Typography>
-                          Money Given: <strong>Nrs. 1000</strong>
+                          Discount: <strong>Nrs. 500</strong>
                         </Typography>
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>
                         <Typography>
-                          Return: <strong>Nrs. 500</strong>
+                          Given amount: <strong>Nrs. 500</strong>
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <Typography>
+                          Return amount: <strong>Nrs. 1000</strong>
                         </Typography>
                       </TableCell>
                     </TableRow>
                   </TableCell>
-                  <TableCell colSpan={2}>
+                  <TableCell align="center">
                     <TableRow>
-                      <TableCell rowSpan={4}>
+                      <TableCell align="center">
+                        <Typography>
+                          Total amount: <strong>Nrs. 1000</strong>
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell align="center">
                         <FormControl>
                           <FormLabel id="payment">Mode of Payment</FormLabel>
                           <RadioGroup
+                            row
                             aria-labelledby="payment mode"
                             defaultValue="qr"
                             name="radio-buttons-group"
@@ -209,11 +229,22 @@ const BillCheckout = (props) => {
                         </FormControl>
                       </TableCell>
                     </TableRow>
+
                     <TableRow>
                       <TableCell>
-                        <Typography align="center"><strong>Simo</strong></Typography>
-                        <Divider />
-                        <Typography>For Kalpa Production</Typography>
+                        <TableRow>
+                          <Typography align="center">
+                            <strong>SIMO</strong>
+                          </Typography>
+                        </TableRow>
+                        <TableRow>
+                          <Divider />
+                        </TableRow>
+                        <TableRow>
+                          <Typography align="center">
+                            for kalpa production
+                          </Typography>
+                        </TableRow>
                       </TableCell>
                     </TableRow>
                   </TableCell>
