@@ -338,10 +338,7 @@ export default function Billing() {
                     productStock={productStock}
                     handleOrder={handleOrder}
                   />
-                </ListItem>
-                <ListItem key={2}>
                   <TextField
-                    fullWidth
                     id="outlined-qty"
                     label="Enter quantity"
                     type="number"
@@ -352,6 +349,18 @@ export default function Billing() {
                     }}
                   />
                 </ListItem>
+                {/* <ListItem key={2}>
+                  <TextField
+                    id="outlined-qty"
+                    label="Enter quantity"
+                    type="number"
+                    variant="outlined"
+                    value={orderQty}
+                    onChange={(e) => {
+                      handleQtyChange(e.target.value);
+                    }}
+                  />
+                </ListItem> */}
                 <ListItem>
                   <TextField
                     disabled
@@ -396,6 +405,14 @@ export default function Billing() {
                     }}
                   />
                 </ListItem>
+                {/* <ListItem>
+                  <TextField
+                    fullWidth
+                    id="outlined-vat"
+                    label="Vat %"
+                    variant="outlined"
+                  />
+                </ListItem> */}
                 <ListItem>
                   <TextField
                     fullWidth

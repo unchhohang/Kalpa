@@ -19,7 +19,7 @@ export default function SelectProductInput(props) {
   const dot = (color = "transparent") => ({
     alignItems: "center",
     display: "flex",
-    width: "200%",
+    width: "50%",
 
     ":before": {
       backgroundColor: color,
@@ -27,7 +27,7 @@ export default function SelectProductInput(props) {
       content: '" "',
       display: "block",
       marginRight: 0,
-      height: 10,
+      height: 40,
     },
   });
 
@@ -38,7 +38,7 @@ export default function SelectProductInput(props) {
   };
 
   return (
-    <div>
+    <div style={{'width':'45%', 'marginRight':'35px'}}>
       <Select
         options={options}
         styles={colourStyles}
