@@ -201,9 +201,56 @@ export default function Billing() {
     }
   }
 
-  // Finally pay
+  // print
+  function posPrint(billId) {
+    console.log("final pay was just called");
 
+    let pay = {
+      billingId: billId,
+
+      customerName: customerName,
+      customerPAN: "",
+      customerAddress: customerAddress,
+      customerNo: customerNo,
+
+      amount: subTotal,
+      discount: discount,
+
+      totalAmount: totalAmount,
+      syncWithIRD: true,
+      isBillPrinted: true,
+      isBillActive: false,
+
+      enteredBy: staffName,
+      printedBy: staffName,
+      isRealTime: true,
+      paymentMethod: modePay,
+
+      isDeleted: false,
+
+      printCount: 1,
+    };
+    axios
+      .post("/billing/print", pay)
+      .then((data) => {
+        handleCloseb();
+
+        // default all params input
+        setDiscount(0);
+        setGivenAmount(0);
+        setSubTotal(0);
+        setTotalAmount(0);
+        setReturnAmount(0);
+        setCustomerName("");
+        setCustomerNo("");
+        setCustomerAddress("");
+      })
+      .catch((err) => console.log(err));
+  }
+
+  // Finally pay
   function finallyPay(billId) {
+    console.log("final pay was just called");
     let pay = {
       billingId: billId,
 
@@ -291,6 +338,7 @@ export default function Billing() {
             <TextField
               sx={{ borderColor: "#D9D9D9", backgroundColor: "#FFFFFF" }}
               label="Contact No"
+              type={"number"}
               variant="outlined"
               value={customerNo}
               onChange={(e) => {
@@ -338,10 +386,7 @@ export default function Billing() {
                     productStock={productStock}
                     handleOrder={handleOrder}
                   />
-                </ListItem>
-                <ListItem key={2}>
                   <TextField
-                    fullWidth
                     id="outlined-qty"
                     label="Enter quantity"
                     type="number"
@@ -352,6 +397,18 @@ export default function Billing() {
                     }}
                   />
                 </ListItem>
+                {/* <ListItem key={2}>
+                  <TextField
+                    id="outlined-qty"
+                    label="Enter quantity"
+                    type="number"
+                    variant="outlined"
+                    value={orderQty}
+                    onChange={(e) => {
+                      handleQtyChange(e.target.value);
+                    }}
+                  />
+                </ListItem> */}
                 <ListItem>
                   <TextField
                     disabled
@@ -390,14 +447,20 @@ export default function Billing() {
                     type="number"
                     onChange={(e) => {
                       let discount = Number(e.target.value);
-                      if (discount >= 0) {
-                        console.log(`disounct value`);
-                        console.log(typeof discount);
+                      if (discount >= 0 && discount < subTotal) {
                         setDiscount(discount);
                       }
                     }}
                   />
                 </ListItem>
+                {/* <ListItem>
+                  <TextField
+                    fullWidth
+                    id="outlined-vat"
+                    label="Vat %"
+                    variant="outlined"
+                  />
+                </ListItem> */}
                 <ListItem>
                   <TextField
                     fullWidth
@@ -447,6 +510,7 @@ export default function Billing() {
                     setModePay={setModePay}
                     staffName={staffName}
                     finallyPay={finallyPay}
+                    posPrint={posPrint}
                   />
                 </ListItem>
               </List>

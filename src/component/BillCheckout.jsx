@@ -56,10 +56,15 @@ const BillCheckout = (props) => {
       <Card sx={style}>
         <CardContent>
           <Grid container spacing={2}>
-            <Grid sx={6} md={6} align="left">
+            <Grid sx={4} md={4} align="left">
               <Typography>Date: {D} </Typography>
             </Grid>
-            <Grid sx={6} md={6} align="right">
+            <Grid sx={4} md={4} align="center">
+              <Typography>
+              Bill number: {props.billId}
+              </Typography>
+            </Grid>
+            <Grid sx={4} md={4} align="right">
               <Button onClick={props.handleClose}>
                 <CloseIcon />
               </Button>
@@ -219,7 +224,7 @@ const BillCheckout = (props) => {
           </TableContainer>
         </CardContent>
         <CardActions>
-          <div>{props.billId}</div>
+          {/* <div>{props.billId}</div> */}
           <Button
             style={{ "margin-left": "10px" }}
             variant="contained"
@@ -227,12 +232,14 @@ const BillCheckout = (props) => {
             size="large"
             fullWidth
             onClick={() => {
-              console.log(`should fire`);
-              console.log(props.givenAmount);
-              console.log(props.totalAmount);
+              // console.log(`should fire`);
+              // console.log(props.givenAmount);
+              // console.log(props.totalAmount);
               if (props.givenAmount >= props.totalAmount) {
                 console.log(`finally pay is going oe.e`);
+                props.handleClose();
                 props.finallyPay(props.billId);
+                // props.posPrint(props.billId)
               }
             }}
           >
