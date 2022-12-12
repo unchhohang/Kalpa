@@ -24,6 +24,7 @@ import moment from "moment";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import PrintIcon from "@mui/icons-material/Print";
 
 export default function ReportTable(props) {
   let bills = props.bills;
@@ -61,6 +62,20 @@ export default function ReportTable(props) {
       .catch((err) => console.log(err));
   }
 
+  /**
+   * @params {billingId}
+   * Increase bill print count also prints bill
+   */
+
+  function printBill(billingId) {
+    axios
+      .post("/billing/print", { billingId: billingId })
+      .then((data) => {
+        console.log(data.data);
+      })
+      .catch((err) => console.log(err));
+  }
+
   if (bill === undefined) {
     return <div>...Loading</div>;
   }
@@ -72,7 +87,18 @@ export default function ReportTable(props) {
           <h3>Inovice NO: {bill.invoiceNo}</h3>
         </span>
         <span>
-          <h3>Date: {billDate}</h3>
+          <h3>
+            Date: {billDate}
+            <Button
+              sx={{ marginLeft: "61px" }}
+              onClick={() => {
+                console.log(bill.billingId);
+                printBill(bill.billingId);
+              }}
+            >
+              <PrintIcon />
+            </Button>
+          </h3>
         </span>
       </div>
       <div>
