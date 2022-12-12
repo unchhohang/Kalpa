@@ -91,7 +91,7 @@ export default function Billing() {
       <h2>Stock</h2> */}
 
       <div>
-        <TableContainer className="billing-action-table" component={Paper}>
+        <TableContainer className="billing-action-table" component={Paper} style={{'height':'auto'}}>
           <Table sx aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#D9D9D9" }}>
               <TableRow>
@@ -127,6 +127,9 @@ export default function Billing() {
                         <TextField
                           value={updateQty}
                           type="number"
+                          InputProps={{
+                            inputProps: { min: 0 }
+                          }}
                           onChange={(e) => {
                             setUpdateQty(e.target.value);
                           }}
