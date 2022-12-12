@@ -169,8 +169,8 @@ export default function Billing() {
 
   // Handle price change
 
-  function handleQtyChange(qty) {
-    console.log(qty);
+  function handleQtyChange(changeQty) {
+    let qty = Number(changeQty);
     if (qty >= 0 && qty <= orderProduct.quantity) {
       setOrderQty(qty);
     } else {
@@ -389,8 +389,10 @@ export default function Billing() {
                     variant="outlined"
                     type="number"
                     onChange={(e) => {
-                      let discount = e.target.value;
+                      let discount = Number(e.target.value);
                       if (discount >= 0) {
+                        console.log(`disounct value`);
+                        console.log(typeof discount);
                         setDiscount(discount);
                       }
                     }}
@@ -405,7 +407,7 @@ export default function Billing() {
                     variant="outlined"
                     value={givenAmount}
                     onChange={(e) => {
-                      let given = e.target.value;
+                      let given = Number(e.target.value);
 
                       if (given >= 0) {
                         setGivenAmount(given);
@@ -419,7 +421,11 @@ export default function Billing() {
                     size="large"
                     fullWidth
                     onClick={(e) => {
-                      if (givenAmount >= totalAmount && subTotal !== 0) {
+                      if (
+                        givenAmount >= totalAmount &&
+                        subTotal !== 0 &&
+                        staffName !== ""
+                      ) {
                         handleOpenb();
                       }
                     }}

@@ -27,7 +27,10 @@ import { useState } from "react";
 
 export default function ReportTable(props) {
   let bills = props.bills;
-  const [bill, setBill] = useState(bills[0]);
+
+  // Paging position start with 0
+  const [P, setP] = useState(0);
+  const [bill, setBill] = useState(bills[P]);
   const [orders, setOrders] = useState([]);
   const [billDate, setBillDate] = useState();
 
@@ -35,17 +38,31 @@ export default function ReportTable(props) {
     if (bill !== undefined) {
       getOrders(bill.billingId);
 
+      console.log(`d array in report table`);
+      console.log(bill.billingId);
       // Split only date
-      let dArray = bill.bill_date.split("T");
+      let dArray = bill?.bill_date.split("T");
       setBillDate(dArray[0]);
     }
   }, [bill]);
 
+  useEffect(() => {
+    setBill(bills[P]);
+  }, [P, bills]);
+
   function getOrders(billingId) {
     axios
       .get("/order", { params: { id: billingId } })
-      .then((data) => setOrders(data.data))
+      .then((data) => {
+        console.log(`new order got::`);
+        console.log(JSON.stringify(data.data, null, 2));
+        setOrders(data.data);
+      })
       .catch((err) => console.log(err));
+  }
+
+  if (bill === undefined) {
+    return <div>...Loading</div>;
   }
 
   return (
@@ -87,8 +104,8 @@ export default function ReportTable(props) {
                     >
                       <TableCell>{x.productName}</TableCell>
                       <TableCell>{x.price}</TableCell>
-                      <TableCell>{x.quantity}</TableCell>
-                      <TableCell>{x.price * x.quantity}</TableCell>
+                      <TableCell>{x.orderQuantity}</TableCell>
+                      <TableCell>{x.price * x.orderQuantity}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -106,11 +123,11 @@ export default function ReportTable(props) {
           <Grid xs={3}>
             <List>
               <ListItem>
-                <Typography>Customer Name: {bill.customer_name}</Typography>
+                <Typography>Customer Name: {bill?.customer_name}</Typography>
               </ListItem>
               <ListItem>
                 <Typography>
-                  Customer Address: {bill.customer_address}
+                  Customer Address: {bill?.customer_address}
                 </Typography>
               </ListItem>
               <ListItem>
@@ -152,7 +169,7 @@ export default function ReportTable(props) {
           count={bills.length}
           onChange={(e, p) => {
             console.log(`in page ${p}`);
-            setBill(bills[p - 1]);
+            setP(p - 1);
           }}
         />
       </div>
@@ -171,6 +188,8 @@ export default function ReportTable(props) {
               .then((data) => {
                 let dArray = moment().format().split("T");
                 let cDate = dArray[0];
+
+                P === 0 ? setP(0) : setP(P - 1);
                 props.getBills(cDate);
               })
               .catch((err) => console.log(err));

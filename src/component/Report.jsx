@@ -29,7 +29,6 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 
 import axios from "axios";
 
-
 export default function Report() {
   /**
    * Toogle false show <DailyReport>
@@ -78,10 +77,21 @@ export default function Report() {
       .catch((err) => console.log(err));
   }
 
+  /**
+   *
+   * @param {date } date
+   * returns {bills} list of bills on input date
+   */
+
+  function asyncGetBill(date) {
+    console.log(`async inside getBIlls`);
+    console.log(date);
+    return axios.get("/report", { params: { date: date } });
+  }
+
   return (
     <>
       <div>
-
         <Breadcrumbs>
           <Link
             underline="hover"
@@ -104,7 +114,6 @@ export default function Report() {
           <Typography color="text.primary">Manage Report</Typography>
         </Breadcrumbs>
 
-
         <Box sx={{ width: "100%", typography: "body1" }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -118,12 +127,18 @@ export default function Report() {
               </TabList>
             </Box>
             <TabPanel value="1">
-
-              <DailyReport bills={bills} />
+              <DailyReport
+                getBills={getBills}
+                asyncGetBills={asyncGetBill}
+                bills={bills}
+              />
             </TabPanel>
             <TabPanel value="2">
-              <DateReport bills={bills} />
-
+              <DateReport
+                getBills={getBills}
+                bills={bills}
+                asyncGetBills={asyncGetBill}
+              />
             </TabPanel>
           </TabContext>
         </Box>
@@ -131,74 +146,3 @@ export default function Report() {
     </>
   );
 }
-
-const fake = [
-  {
-    billNo: 22,
-    date: moment().format().toString(),
-    orders: [
-      {
-        productName: "satu",
-        price: 100,
-        quantity: 20,
-        amount: 2000,
-      },
-      {
-        productName: "Orange",
-        price: 15,
-        quantity: 2,
-        amount: 30,
-      },
-      {
-        productName: "coke",
-        price: 70,
-        quantity: 2,
-        amount: 140,
-      },
-    ],
-    subAmount: 2170,
-    customerName: "Simon",
-    customerAddress: "Kuleshor",
-    contactNo: 9856560000,
-    printedBy: "INndra",
-    paymentMode: "Cash",
-    discount: 50,
-    taxableAmount: 500,
-    vatAmount: 65,
-    totalAmount: 5656,
-  },
-  {
-    billNo: 2,
-    date: moment().format(),
-    orders: [
-      {
-        productName: "Lapsi",
-        price: 50,
-        quantity: 11,
-        amount: 555,
-      },
-      {
-        productName: "Lacto",
-        price: 10,
-        quantity: 5,
-        amount: 50,
-      },
-      {
-        productName: "aalu",
-        price: 100,
-        quantity: 1,
-        amount: 150,
-      },
-    ],
-    subAmount: 255,
-    customerName: "Dio",
-    customerAddress: "Balkhu",
-    contactNo: 9856550000,
-    printedBy: "Uttam",
-    paymentMode: "QR",
-    discount: 50,
-    taxableAmount: 500,
-    vatAmount: 65,
-    totalAmount: 568,
-  },
-];
