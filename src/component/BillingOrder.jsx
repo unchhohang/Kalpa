@@ -22,6 +22,10 @@ import axios from "axios";
 export default function BillingOrder(props) {
   let orders = props.orders;
 
+  console.log(
+    `product stocks  : ${JSON.stringify(props.productStock, null, 2)}`
+  );
+
   const [open, setOpen] = useState(false);
   const deleteOpen = () => setOpen(true);
   const deleteClose = () => setOpen(false);
@@ -87,6 +91,12 @@ export default function BillingOrder(props) {
           </TableHead>
           <TableBody>
             {orders.map((x, index) => {
+              let productQty = Number(
+                props.productStock.find(
+                  (stock) => stock.productStockId === x.productStockId
+                ).quantity
+              );
+
               return (
                 <TableRow
                   // key={}
@@ -106,7 +116,7 @@ export default function BillingOrder(props) {
                         onChange={(e) => {
                           let qty = e.target.value;
 
-                          if (qty >= 0 && qty <= x.quantity) setUpdatedQty(qty);
+                          if (qty >= 0 && qty <= productQty) setUpdatedQty(qty);
                         }}
                       />
                     ) : (
@@ -138,7 +148,6 @@ export default function BillingOrder(props) {
                       onClick={() => {
                         deleteOpen();
                         setDeleteId(x.orderId);
-
                       }}
                       variant="outlined"
                       color="inherit"

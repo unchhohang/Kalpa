@@ -29,6 +29,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import { Done } from "@mui/icons-material";
+import logApi from "../helperApi/logApi";
 export default function Product() {
   const [productStock, setProductStock] = useState([]);
   const [inputName, setInputName] = useState();
@@ -54,6 +55,11 @@ export default function Product() {
         })
         .then((data) => {
           getProductStockList();
+
+          // Logs entry
+          logApi(
+            `Product created with name: ${inputName} and price : ${inputPrice}`
+          );
         })
         .catch((err) => console.log(err));
     }
@@ -85,6 +91,11 @@ export default function Product() {
         })
         .then((data) => {
           getProductStockList();
+
+          // Logs entry
+          logApi(
+            `Product updated  with productStockId: ${productStockId}, name: ${name} and price : ${price}`
+          );
         })
         .catch((err) => console.log(err));
     }
@@ -96,6 +107,9 @@ export default function Product() {
       .delete("/productStock", { params: { id: productId } })
       .then((data) => {
         getProductStockList();
+
+        // Logs entry
+        logApi(`Product deleted of productStockId : ${productId}`);
       })
       .catch((err) => console.log(err));
   }

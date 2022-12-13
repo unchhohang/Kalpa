@@ -30,6 +30,7 @@ import axios from "axios";
 import useLocalStorage from "../hooks/UseLocalStorage";
 import SelectProductInput from "./SelectProductInput";
 import BillingOrder from "./BillingOrder";
+import logApi from "../helperApi/logApi";
 
 let staff;
 const selectStaff = (event) => {
@@ -184,6 +185,8 @@ export default function Billing() {
   function onOrderClick() {
     let billingId = bill.billingId;
     let productStockId = orderProduct.productStockId;
+    let productName = orderProduct.productName;
+    let price = orderProduct.price;
     let orderQuantity = orderQty;
 
     if (orderQuantity !== 0) {
@@ -191,6 +194,8 @@ export default function Billing() {
         .post("order", {
           billingId: billingId,
           productStockId: productStockId,
+          productName: productName,
+          price: price,
           orderQuantity: orderQuantity,
         })
         .then((data) => {
@@ -292,6 +297,9 @@ export default function Billing() {
         setCustomerName("");
         setCustomerNo("");
         setCustomerAddress("");
+
+        // Insert remark that bill was set with bill id
+        logApi(`Bill was paid. Bill id is ${bill?.billingId}`);
       })
       .catch((err) => console.log(err));
   }
@@ -364,6 +372,7 @@ export default function Billing() {
             orders={orders}
             getOrders={getOrders}
             subTotal={subTotal}
+            productStock={productStock}
           />
         </div>
         <Divider />

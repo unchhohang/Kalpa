@@ -25,6 +25,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import PrintIcon from "@mui/icons-material/Print";
+import logApi from "../helperApi/logApi";
 
 export default function ReportTable(props) {
   let bills = props.bills;
@@ -72,6 +73,9 @@ export default function ReportTable(props) {
       .post("/billing/print", { billingId: billingId })
       .then((data) => {
         console.log(data.data);
+
+        // Logs entry
+        logApi(`Bill of billingId: ${billingId} has been printed again and counted has increased to +1`);
       })
       .catch((err) => console.log(err));
   }
@@ -217,6 +221,9 @@ export default function ReportTable(props) {
 
                 P === 0 ? setP(0) : setP(P - 1);
                 props.getBills(cDate);
+
+                // Logs entry
+                logApi(`Bill delete state trun to true with bill of billing invoiceNo: ${bill.invoiceNo}`);
               })
               .catch((err) => console.log(err));
           }}

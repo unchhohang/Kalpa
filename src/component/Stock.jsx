@@ -26,6 +26,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import logApi from "../helperApi/logApi";
 
 export default function Billing() {
   const [productStock, setProductStock] = useState([]);
@@ -57,7 +58,12 @@ export default function Billing() {
         price: price,
         quantity: updateQty,
       })
-      .then((data) => getProductList())
+      .then((data) => {
+        getProductList();
+        logApi(
+          `Stock of productId: ${id}, product name: ${productName}, quantity is changed to ${updateQty}`
+        );
+      })
       .catch((err) => console.log(err));
   }
 
@@ -91,7 +97,11 @@ export default function Billing() {
       <h2>Stock</h2> */}
 
       <div>
-        <TableContainer className="billing-action-table" component={Paper} style={{'height':'auto'}}>
+        <TableContainer
+          className="billing-action-table"
+          component={Paper}
+          style={{ height: "auto" }}
+        >
           <Table sx aria-label="simple table">
             <TableHead sx={{ backgroundColor: "#D9D9D9" }}>
               <TableRow>
@@ -128,7 +138,7 @@ export default function Billing() {
                           value={updateQty}
                           type="number"
                           InputProps={{
-                            inputProps: { min: 0 }
+                            inputProps: { min: 0 },
                           }}
                           onChange={(e) => {
                             setUpdateQty(e.target.value);

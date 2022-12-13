@@ -48,9 +48,6 @@ const BillCheckout = (props) => {
 
   let orders = props.orders;
 
-  console.log(`orders in Bill checkout`);
-  console.log(JSON.stringify(orders));
-
   return (
     <Modal keepMounted open={props.open} onClose={props.handleClose}>
       <Card sx={style}>
@@ -60,9 +57,7 @@ const BillCheckout = (props) => {
               <Typography>Date: {D} </Typography>
             </Grid>
             <Grid sx={4} md={4} align="center">
-              <Typography>
-              Bill number: {props.billId}
-              </Typography>
+              <Typography>Bill number: {props.billId}</Typography>
             </Grid>
             <Grid sx={4} md={4} align="right">
               <Button onClick={props.handleClose}>

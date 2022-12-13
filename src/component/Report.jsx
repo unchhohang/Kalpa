@@ -131,6 +131,7 @@ export default function Report() {
                 getBills={getBills}
                 asyncGetBills={asyncGetBill}
                 bills={bills}
+                stocks={productStocks}
               />
             </TabPanel>
             <TabPanel value="2">
