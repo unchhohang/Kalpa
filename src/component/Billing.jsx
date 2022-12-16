@@ -392,7 +392,7 @@ export default function Billing() {
                   {/* Select product */}
 
                   <SelectProductInput
-                    productStock={productStock}
+                    productStock={productStock.filter((p) => p.quantity > 0)}
                     handleOrder={handleOrder}
                   />
                   <TextField
