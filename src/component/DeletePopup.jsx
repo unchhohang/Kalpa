@@ -33,6 +33,7 @@ const DeletePopup = (props) => {
             color="warning"
             onClick={() => {
               onYesClicked(props.id);
+              props.handleClose();
             }}
           >
             YES

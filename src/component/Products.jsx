@@ -30,6 +30,7 @@ import { useEffect } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import { Done } from "@mui/icons-material";
 import logApi from "../helperApi/logApi";
+import DeletePopup from "./DeletePopup";
 export default function Product() {
   const [productStock, setProductStock] = useState([]);
   const [inputName, setInputName] = useState();
@@ -37,11 +38,15 @@ export default function Product() {
   const [editableRowId, setEditableRowId] = useState(null);
   const [updatedPrice, setUpdatedPrice] = useState(0);
   const [updatedName, setUpdatedName] = useState();
+  const [open, setOpen] = useState(false);
+  const deleteOpen = () => setOpen(true);
+  const deleteClose = () => setOpen(false);
 
   useEffect(() => {
     console.log(`use effect is ran....`);
     getProductStockList();
   }, []);
+  const [deleteId, setDeleteId] = useState();
 
   // Function to add product
   function addProduct() {
@@ -102,14 +107,16 @@ export default function Product() {
   }
 
   // Delete product
-  function deleteProduct(productId) {
+  function deleteProduct(productStockId) {
+    console.log('product delete api');
+    console.log(productStockId);
     axios
-      .delete("/productStock", { params: { id: productId } })
+      .delete("/productStock", { params: { id: productStockId } })
       .then((data) => {
         getProductStockList();
 
         // Logs entry
-        logApi(`Product deleted of productStockId : ${productId}`);
+        logApi(`Product deleted of productStockId : ${productStockId}`);
       })
       .catch((err) => console.log(err));
   }
@@ -268,12 +275,18 @@ export default function Product() {
                       <Button
                         sx={{ color: "#000000" }}
                         onClick={() => {
-                          setEditableRowId(null);
-                          deleteProduct(x.productStockId);
+                          deleteOpen();
+                          setDeleteId(x.productStockId);
                         }}
                       >
                         <Delete />
                       </Button>
+                      <DeletePopup
+                      open={open}
+                      id={deleteId}
+                      deleteByid={deleteProduct}
+                      handleClose={deleteClose}
+                      />
                     </TableCell>
                   </TableRow>
                 );
