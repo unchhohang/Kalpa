@@ -75,7 +75,9 @@ export default function ReportTable(props) {
         console.log(data.data);
 
         // Logs entry
-        logApi(`Bill of billingId: ${billingId} has been printed again and counted has increased to +1`);
+        logApi(
+          `Bill of billingId: ${billingId} has been printed again and counted has increased to +1`
+        );
       })
       .catch((err) => console.log(err));
   }
@@ -223,7 +225,9 @@ export default function ReportTable(props) {
                 props.getBills(cDate);
 
                 // Logs entry
-                logApi(`Bill delete state trun to true with bill of billing invoiceNo: ${bill.invoiceNo}`);
+                logApi(
+                  `Bill delete state trun to true with bill of billing invoiceNo: ${bill.invoiceNo}`
+                );
               })
               .catch((err) => console.log(err));
           }}

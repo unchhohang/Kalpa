@@ -13,11 +13,15 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import splitDate from "../helperApi/splitDate";
 import ReportTable from "./ReportTable";
 
 export default function DailyReport(props) {
   let bills = props.bills;
   let stocks = props.stocks;
+
+  console.log(`Daily reports ...`);
+  console.log(JSON.stringify(bills, null, 2));
 
   return (
     <div>
@@ -29,6 +33,14 @@ export default function DailyReport(props) {
           variant="contained"
           color="success"
           size="medium"
+          onClick={() => {
+            if (bills?.length !== 0) {
+              let uniDate = bills[0].bill_date;
+              let d = splitDate(uniDate);
+
+              props.exportPdf(d);
+            }
+          }}
         >
           Export to PDF
         </Button>

@@ -89,6 +89,21 @@ export default function Report() {
     return axios.get("/report", { params: { date: date } });
   }
 
+  /**
+   * export pdf Input given date without time
+   */
+
+  function exportPdf(givenDate) {
+    axios
+      .post("/report/exportPdf", {
+        date: "2022-12-20",
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <>
       <div>
@@ -132,6 +147,7 @@ export default function Report() {
                 asyncGetBills={asyncGetBill}
                 bills={bills}
                 stocks={productStocks}
+                exportPdf={exportPdf}
               />
             </TabPanel>
             <TabPanel value="2">
@@ -139,6 +155,7 @@ export default function Report() {
                 getBills={getBills}
                 bills={bills}
                 asyncGetBills={asyncGetBill}
+                exportPdf={exportPdf}
               />
             </TabPanel>
           </TabContext>

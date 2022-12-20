@@ -8,6 +8,7 @@ import moment from "moment";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import splitDate from "../helperApi/splitDate";
 import ReportTable from "./ReportTable";
 
 export default function DateReport(props) {
@@ -58,6 +59,14 @@ export default function DateReport(props) {
               variant="contained"
               color="success"
               size="medium"
+              onClick={() => {
+                if (bills?.length !== 0) {
+                  let uniDate = bills[0].bill_date;
+                  let d = splitDate(uniDate);
+
+                  props.exportPdf(d);
+                }
+              }}
             >
               Export to PDF
             </Button>
@@ -88,7 +97,11 @@ export default function DateReport(props) {
 
       {bills.length !== 0 && (
         <div>
-          <div>{bills.length !== 0 && <ReportTable bills={bills} getBills={props.getBills} />}</div>
+          <div>
+            {bills.length !== 0 && (
+              <ReportTable bills={bills} getBills={props.getBills} />
+            )}
+          </div>
         </div>
       )}
     </div>
