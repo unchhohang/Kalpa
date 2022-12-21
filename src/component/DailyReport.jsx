@@ -38,6 +38,9 @@ export default function DailyReport(props) {
               let uniDate = bills[0].bill_date;
               let d = splitDate(uniDate);
 
+              console.log(`export pdf clicked`);
+              console.log(d);
+
               props.exportPdf(d);
             }
           }}

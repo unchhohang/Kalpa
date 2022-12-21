@@ -96,7 +96,7 @@ export default function Report() {
   function exportPdf(givenDate) {
     axios
       .post("/report/exportPdf", {
-        date: "2022-12-20",
+        date: givenDate,
       })
       .then((data) => {
         console.log(data);
