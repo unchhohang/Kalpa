@@ -15,8 +15,25 @@ import {
 } from "@mui/material";
 import splitDate from "../helperApi/splitDate";
 import ReportTable from "./ReportTable";
+import Snackbar from "@mui/material/Snackbar";
+import { useState } from "react";
 
 export default function DailyReport(props) {
+
+   // Snackbars
+const [openS, setOpenS] = useState(false);
+
+const snackbarClick = () => {
+  setOpenS(true);
+};
+
+const snackbarClose = (event, reason) => {
+  if (reason === "clickaway") {
+    return;
+  }
+  setOpenS(false);
+};
+
   let bills = props.bills;
   let stocks = props.stocks;
 
@@ -42,11 +59,19 @@ export default function DailyReport(props) {
               console.log(d);
 
               props.exportPdf(d);
+              snackbarClick();
             }
           }}
         >
           Export to PDF
         </Button>
+        <Snackbar
+            open={openS}
+            autoHideDuration={3000}
+            onClose={snackbarClose}
+            message="PDF Exported!"
+            // action={action}
+          />
       </div>
       <div>
         {

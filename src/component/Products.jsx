@@ -31,6 +31,8 @@ import DoneIcon from "@mui/icons-material/Done";
 import { Done } from "@mui/icons-material";
 import logApi from "../helperApi/logApi";
 import DeletePopup from "./DeletePopup";
+import Snackbar from "@mui/material/Snackbar";
+
 export default function Product() {
   const [productStock, setProductStock] = useState([]);
   const [inputName, setInputName] = useState();
@@ -47,6 +49,20 @@ export default function Product() {
     getProductStockList();
   }, []);
   const [deleteId, setDeleteId] = useState();
+
+  // Snackbars
+  const [openS, setOpenS] = useState(false);
+
+  const snackbarClick = () => {
+    setOpenS(true);
+  };
+
+  const snackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenS(false);
+  };
 
   // Function to add product
   function addProduct() {
@@ -65,6 +81,8 @@ export default function Product() {
           logApi(
             `Product created with name: ${inputName} and price : ${inputPrice}`
           );
+          // open snackbar
+          snackbarClick();
         })
         .catch((err) => console.log(err));
     }
@@ -108,7 +126,7 @@ export default function Product() {
 
   // Delete product
   function deleteProduct(productStockId) {
-    console.log('product delete api');
+    console.log("product delete api");
     console.log(productStockId);
     axios
       .delete("/productStock", { params: { id: productStockId } })
@@ -194,6 +212,13 @@ export default function Product() {
           >
             <AddIcon />
           </Fab>
+          <Snackbar
+            open={openS}
+            autoHideDuration={3000}
+            onClose={snackbarClose}
+            message="Successfully Product added!"
+            // action={action}
+          />
         </div>
       </div>
       <div>
@@ -282,10 +307,10 @@ export default function Product() {
                         <Delete />
                       </Button>
                       <DeletePopup
-                      open={open}
-                      id={deleteId}
-                      deleteByid={deleteProduct}
-                      handleClose={deleteClose}
+                        open={open}
+                        id={deleteId}
+                        deleteByid={deleteProduct}
+                        handleClose={deleteClose}
                       />
                     </TableCell>
                   </TableRow>
