@@ -2,7 +2,7 @@
  * Component for report according to date selected
  */
 
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, Snackbar, TextField } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import React from "react";
@@ -12,6 +12,21 @@ import splitDate from "../helperApi/splitDate";
 import ReportTable from "./ReportTable";
 
 export default function DateReport(props) {
+
+    // Snackbars
+const [openS, setOpenS] = useState(false);
+
+const snackbarClick = () => {
+  setOpenS(true);
+};
+
+const snackbarClose = (event, reason) => {
+  if (reason === "clickaway") {
+    return;
+  }
+  setOpenS(false);
+};
+
   const [pickerDate, setPickerDate] = useState(moment().format());
 
   let bills = props.bills;
@@ -65,11 +80,19 @@ export default function DateReport(props) {
                   let d = splitDate(uniDate);
 
                   props.exportPdf(d);
+                  snackbarClick();
                 }
               }}
             >
               Export to PDF
             </Button>
+            <Snackbar
+            open={openS}
+            autoHideDuration={3000}
+            onClose={snackbarClose}
+            message="PDF Exported!"
+            // action={action}
+          />
           </Grid>
         </Grid>
       </Box>

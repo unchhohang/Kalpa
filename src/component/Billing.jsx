@@ -15,6 +15,7 @@ import {
   ListItem,
   MenuItem,
   Select,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -39,6 +40,20 @@ const selectStaff = (event) => {
 };
 
 export default function Billing() {
+  // Snackbars
+  const [openS, setOpenS] = useState(false);
+
+  const snackbarClick = () => {
+    setOpenS(true);
+  };
+
+  const snackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenS(false);
+  };
+
   const name = "Billing";
 
   const [openb, setOpenb] = React.useState(false);
@@ -300,6 +315,7 @@ export default function Billing() {
 
         // Insert remark that bill was set with bill id
         logApi(`Bill was paid. Bill id is ${bill?.billingId}`);
+        snackbarClick();
       })
       .catch((err) => console.log(err));
   }
@@ -504,6 +520,13 @@ export default function Billing() {
                   >
                     Procced
                   </Button>
+                  <Snackbar
+                    open={openS}
+                    autoHideDuration={4000}
+                    onClose={snackbarClose}
+                    message="Checkout Completed!"
+                    // action={action}
+                  />
                   <BillCheckout
                     orders={orders}
                     open={openb}
