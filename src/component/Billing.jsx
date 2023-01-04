@@ -416,7 +416,7 @@ export default function Billing() {
                     label="Enter quantity"
                     type="number"
                     variant="outlined"
-                    value={orderQty}
+                    value={orderQty === 0 ? "" : orderQty}
                     onChange={(e) => {
                       handleQtyChange(e.target.value);
                     }}
@@ -467,7 +467,7 @@ export default function Billing() {
                     fullWidth
                     id="outlined-discount"
                     label="Discount"
-                    value={discount}
+                    value={discount === 0 ? "" : discount}
                     variant="outlined"
                     type="number"
                     onChange={(e) => {
@@ -493,7 +493,7 @@ export default function Billing() {
                     label="Given Amount"
                     type="number"
                     variant="outlined"
-                    value={givenAmount}
+                    value={givenAmount === 0 ? "" : givenAmount}
                     onChange={(e) => {
                       let given = Number(e.target.value);
 
