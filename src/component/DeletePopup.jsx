@@ -25,7 +25,6 @@ const DeletePopup = (props) => {
         <CardContent>
           <Card>
             <Typography fontSize={24}>DO YOU WANT TO DELETE IT ?</Typography>
-            <Typography>Iam from {props.name}</Typography>
           </Card>
           <Button
             style={{ float: "left" }}
